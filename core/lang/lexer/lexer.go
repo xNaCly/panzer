@@ -54,6 +54,8 @@ func (l *Lexer) Lex() []tokens.Token {
 			tt = tokens.ASTERIKS
 		case ';':
 			tt = tokens.SEMICOLON
+		case '.':
+			tt = tokens.DOT
 		case '$':
 			tt = tokens.DOLLAR
 		case '"':

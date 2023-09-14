@@ -8,7 +8,7 @@ import (
 	"strings"
 )
 
-const DEFAULT_PROMPT = `'u@'h 'd :: `
+const DEFAULT_PROMPT = `'d > `
 
 // contains all possible placeholders a prompt could contain
 var prompt_placeholders = map[rune]string{
@@ -16,6 +16,12 @@ var prompt_placeholders = map[rune]string{
 	'h': "",
 	'w': "",
 	'd': "",
+	// TODO: support git-branch (b) (either nothing or the branch name, see 'git branch')
+	// TODO: support git-status (s) (either nothing or M for modified, see 'git status --short')
+	// TODO: support time (t) (hh:mm:ss, 24hr)
+	// TODO: support time (T) (hh:mm:ss, 12hr)
+	// TODO: support date (D) (yyyy-mm-dd)
+	// TODO: shell name (S)
 }
 
 // computes placeholder values that are known at startup, this decreases load

@@ -4,6 +4,7 @@ const (
 	UNKNOWN TokenType = iota // used for error handling and default value of a token in the lexer
 	EOF                      // END OF INPUT
 
+	DOT       // .
 	PIPE      // |
 	AND       // &
 	ASTERIKS  // *
@@ -17,6 +18,7 @@ const (
 var LOOKUP = map[TokenType]string{
 	UNKNOWN:   "UNKNOWN",
 	EOF:       "EOF",
+	DOT:       "DOT",
 	PIPE:      "PIPE",
 	AND:       "AND",
 	ASTERIKS:  "ASTERIKS",
