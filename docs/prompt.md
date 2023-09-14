@@ -20,7 +20,7 @@ Currently the following placeholders are supported:
 ### Example:
 
 ```gpnzr
-teo@comfyputer /home/teo/programming/gopnzr :: export GPNZR_PROMPT="\u"
+teo@comfyputer /home/teo/programming/gopnzr :: export GPNZR_PROMPT="\u %"
 teo %
 ```
 

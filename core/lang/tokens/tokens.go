@@ -2,8 +2,7 @@ package tokens
 
 const (
 	UNKNOWN TokenType = iota // used for error handling and default value of a token in the lexer
-
-	// symbols
+	EOF                      // END OF INPUT
 
 	PIPE      // |
 	AND       // &
@@ -14,3 +13,15 @@ const (
 	STRING // ".*"
 	IDENT  // [A-Za-z\-]+[_0-9]*
 )
+
+var LOOKUP = map[TokenType]string{
+	UNKNOWN:   "UNKNOWN",
+	EOF:       "EOF",
+	PIPE:      "PIPE",
+	AND:       "AND",
+	ASTERIKS:  "ASTERIKS",
+	SEMICOLON: "SEMICOLON",
+	DOLLAR:    "DOLLAR",
+	STRING:    "STRING",
+	IDENT:     "IDENT",
+}
