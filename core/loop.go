@@ -4,6 +4,7 @@ import (
 	"bufio"
 	"errors"
 	"fmt"
+	a "gopnzr/core/shell/args"
 	"gopnzr/core/shell/env"
 	"gopnzr/core/shell/prompt"
 	"gopnzr/core/shell/system"
@@ -30,7 +31,18 @@ import (
 //   - waiting for input
 //   - exiting on EOF (Ctrl+D)
 func Shell() {
+	args := a.Get()
 	env.SetEnv("PWD", system.Getwd())
+
+	err := prompt.PreComputePlaceholders()
+	if err != nil {
+		fmt.Fprintln(os.Stderr, "error while computing prompt placeholders: ", err)
+	}
+
+	if args.Command != "" {
+		fmt.Println(args.Command)
+		return
+	}
 
 	cancelChan := make(chan os.Signal, 1)
 	signal.Notify(cancelChan,
@@ -38,12 +50,6 @@ func Shell() {
 		syscall.SIGINT,
 		syscall.SIGTERM,
 		syscall.SIGQUIT)
-
-	err := prompt.PreComputePlaceholders()
-
-	if err != nil {
-		fmt.Fprintln(os.Stderr, "error while computing prompt placeholders: ", err)
-	}
 
 	reader := bufio.NewReader(os.Stdin)
 
