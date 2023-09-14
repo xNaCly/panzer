@@ -5,10 +5,12 @@ import (
 	"strings"
 )
 
+// everything passed to the shell which isnt a build in, string or any symbol
+// computed from: ls -la -> Cmd{Name:"ls", Arguments: []string{"-la"}}
 type Cmd struct {
 	Token     tokens.Token
-	Name      Expr
-	Arguments []Expr
+	Name      string
+	Arguments []string
 }
 
 func (c *Cmd) Eval() any {
@@ -16,11 +18,11 @@ func (c *Cmd) Eval() any {
 }
 
 func (c *Cmd) Debug(b *strings.Builder) {
-	c.Name.Debug(b)
+	b.WriteString(c.Name)
 	b.WriteRune('[')
 	cl := len(c.Arguments)
 	for i, ch := range c.Arguments {
-		ch.Debug(b)
+		b.WriteString(ch)
 		if i+1 < cl {
 			b.WriteRune(' ')
 		}

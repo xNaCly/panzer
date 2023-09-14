@@ -5,6 +5,7 @@ import (
 	"strings"
 )
 
+// all characters between " and "
 type String struct {
 	Token tokens.Token
 }

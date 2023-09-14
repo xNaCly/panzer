@@ -13,9 +13,22 @@ import (
 	"syscall"
 )
 
-func loop() {
-}
-
+// main entry point for the shell
+// performs the following actions:
+//
+// 1. computes the value for $PWD
+//
+// 2. registers notifier for syscalls, such as SIGINT, SIGTERM, etc
+//
+// 3. computation of at startup known prompt placeholders
+//
+// 4. starting a go routine for signal handling
+//
+// 5. main loop
+//   - computing the prompt
+//   - waiting for input
+//   - waiting for input
+//   - exiting on EOF (Ctrl+D)
 func Shell() {
 	env.SetEnv("PWD", system.Getwd())
 

@@ -1,3 +1,4 @@
+// abstractions for operating system interactions
 package system
 
 import (
@@ -6,6 +7,7 @@ import (
 	"path"
 )
 
+// returns the current working directory or /
 func Getwd() (wd string) {
 	wd, err := os.Getwd()
 
@@ -16,6 +18,7 @@ func Getwd() (wd string) {
 	return
 }
 
+// returns only the name of the current directory or /
 func Getdir() (dir string) {
 	pwd, ok := env.GetEnv("PWD")
 	dir = "/"
