@@ -7,6 +7,8 @@ gopnzr - a minimal, fast and fun to use shell written in go
 
 ## Features
 
+- [ ] command execution
+- [ ] asteriks expansion
 - [ ] Redirection, see [bash docs](https://www.gnu.org/software/bash/manual/bash.html#Redirections)
 - [ ] Piping, see [bash docs](https://www.gnu.org/software/bash/manual/bash.html#Pipelines)
 - [ ] director navigation, `cd`, see [bash docs](https://www.gnu.org/software/bash/manual/html_node/Bourne-Shell-Builtins.html#index-cd)

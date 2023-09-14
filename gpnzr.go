@@ -1,3 +1,7 @@
 package main
 
-func main() {}
+import "gopnzr/core"
+
+func main() {
+	core.Loop()
+}
