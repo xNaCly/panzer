@@ -57,7 +57,7 @@ func Shell() {
 
 		if err != nil {
 			if errors.Is(err, io.EOF) {
-				fmt.Println("\nexit")
+				fmt.Println("bye bye, see you :^)")
 				os.Exit(0)
 			} else if errors.Is(err, readline.ErrInterrupt) {
 				continue

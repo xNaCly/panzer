@@ -8,7 +8,7 @@ import (
 	"strings"
 )
 
-const DEFAULT_PROMPT = `'d > `
+const DEFAULT_PROMPT = "\033[94m'u\033[0m@\033[93m'h\033[0m \033[95m'd\033[0m \033[32m>\033[0m "
 
 // contains all possible placeholders a prompt could contain
 var prompt_placeholders = map[rune]string{
