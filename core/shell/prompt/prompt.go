@@ -8,7 +8,7 @@ import (
 	"strings"
 )
 
-const DEFAULT_PROMPT = `\u@\h \d :: `
+const DEFAULT_PROMPT = `'u@'h 'd :: `
 
 // contains all possible placeholders a prompt could contain
 var prompt_placeholders = map[rune]string{
@@ -70,7 +70,7 @@ func replacePlaceholders(prompt string) string {
 	b := strings.Builder{}
 	placeHolderMode := false
 	for _, c := range prompt {
-		if c == '\\' {
+		if c == '\'' {
 			placeHolderMode = true
 		} else if placeHolderMode {
 			if t, ok := prompt_placeholders[c]; ok {
