@@ -1,17 +1,16 @@
 package core
 
 import (
-	"bufio"
 	"errors"
 	"fmt"
+	"github.com/chzyer/readline"
+	"gopnzr/core/lang"
 	a "gopnzr/core/shell/args"
 	"gopnzr/core/shell/env"
 	"gopnzr/core/shell/prompt"
 	"gopnzr/core/shell/system"
 	"io"
 	"os"
-	"os/signal"
-	"syscall"
 )
 
 // main entry point for the shell
@@ -40,45 +39,36 @@ func Shell() {
 	}
 
 	if args.Command != "" {
-		fmt.Println(args.Command)
+		lang.Compile(args.Command)
 		return
 	}
 
-	cancelChan := make(chan os.Signal, 1)
-	signal.Notify(cancelChan,
-		syscall.SIGHUP,
-		syscall.SIGINT,
-		syscall.SIGTERM,
-		syscall.SIGQUIT)
+	rl, err := readline.NewEx(&readline.Config{
+		Prompt: prompt.ComputePrompt(),
+	})
 
-	reader := bufio.NewReader(os.Stdin)
-
-	go func() {
-		for {
-			s := <-cancelChan
-			switch s {
-			case syscall.SIGINT:
-				fmt.Print("\n", prompt.ComputePrompt())
-			case syscall.SIGHUP, syscall.SIGTERM, syscall.SIGQUIT:
-				fmt.Printf("\nerr: [%s]\n", s.String())
-				os.Exit(1)
-			}
-		}
-	}()
+	if err != nil {
+		panic(err)
+	}
+	defer rl.Close()
 
 	for {
-		fmt.Print(prompt.ComputePrompt())
-		input, err := reader.ReadString('\n')
+		input, err := rl.Readline()
 
 		if err != nil {
 			if errors.Is(err, io.EOF) {
 				fmt.Println("\nexit")
 				os.Exit(0)
+			} else if errors.Is(err, readline.ErrInterrupt) {
+				continue
 			}
 
 			fmt.Fprintln(os.Stderr, err)
 		}
 
-		fmt.Print(input)
+		if input == "" {
+			continue
+		}
+		lang.Compile(input)
 	}
 }
