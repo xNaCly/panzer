@@ -5,7 +5,7 @@
 gpnzr supports prompt customization via placeholders in the `GPNZR_PROMPT`
 environment variable.
 
-A placeholder is a character prefixed with a backslash, such as `'u` for the
+A placeholder is a character prefixed with a backslash, such as `\u` for the
 name of the currently logged in user.
 
 Currently the following placeholders are supported:
@@ -36,7 +36,7 @@ The following colors are also supported:
 ### Example:
 
 ```gpnzr
-teo@comfyputer /home/teo/programming/gopnzr :: export GPNZR_PROMPT="\u %"
+teo@comfyputer /home/teo/programming/gopnzr :: set GPNZR_PROMPT "\u %"
 teo %
 ```
 

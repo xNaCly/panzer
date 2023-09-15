@@ -5,7 +5,6 @@ package lexer
 import (
 	"fmt"
 	"gopnzr/core/lang/tokens"
-	"os"
 	"strings"
 )
 
@@ -17,7 +16,6 @@ type Lexer struct {
 	inL     int
 	cc      byte // current character
 	Builder *strings.Builder
-	error   bool
 }
 
 func (l *Lexer) NewInput(input string) {
@@ -28,12 +26,11 @@ func (l *Lexer) NewInput(input string) {
 	l.l = 0
 	l.inL = len(input)
 	l.cc = input[0]
-	l.error = false
 }
 
 func (l *Lexer) Lex() []tokens.Token {
 	t := make([]tokens.Token, 0)
-	for l.cc != 0 && !l.error {
+	for l.cc != 0 {
 		tt := tokens.UNKNOWN
 		switch l.cc {
 		case ' ', '\t':
@@ -84,9 +81,6 @@ func (l *Lexer) Lex() []tokens.Token {
 		}
 		l.advance()
 	}
-	if l.error {
-		return []tokens.Token{}
-	}
 	t = append(t, tokens.Token{
 		Pos:  l.lPos,
 		Type: tokens.EOF,
@@ -96,6 +90,9 @@ func (l *Lexer) Lex() []tokens.Token {
 }
 
 func (l *Lexer) ident() string {
+	if l.cc == '=' {
+		panic("got = at identifier, you probably wanted to define an environment variable, use 'set VARIABLE_NAME value' instead")
+	}
 	l.Builder.WriteByte(l.cc)
 	l.advance()
 	for !l.matchAny('&', '|', '=', ';', '$', 0, ' ') {
@@ -117,9 +114,7 @@ func (l *Lexer) string() string {
 	str := l.Builder.String()
 
 	if l.cc != '"' {
-		fmt.Fprintf(os.Stderr, "unterminated string %q\n", str)
-		l.error = true
-		return ""
+		panic(fmt.Sprintf("Unterminated string %q\n", str))
 	}
 
 	l.advance() // skip "

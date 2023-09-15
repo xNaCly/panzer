@@ -1,9 +1,11 @@
 package lang
 
 import (
+	"fmt"
 	"gopnzr/core/lang/expressions"
 	"gopnzr/core/lang/lexer"
 	"gopnzr/core/lang/parser"
+	"gopnzr/core/lang/tokens"
 	"strings"
 )
 
@@ -22,6 +24,7 @@ var par = parser.Parser{}
 func Compile(input string) {
 	lex.NewInput(input)
 	token := lex.Lex()
+	fmt.Println(tokens.Debug(token, &b))
 	par.NewInput(token)
 	ast := par.Parser()
 	exec(ast)
