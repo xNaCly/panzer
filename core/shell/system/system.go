@@ -31,3 +31,14 @@ func Getdir() (dir string) {
 	}
 	return wd
 }
+
+func GetwdFiles(wd string) func(string) []string {
+	return func(l string) []string {
+		names := make([]string, 0)
+		files, _ := os.ReadDir(wd)
+		for _, f := range files {
+			names = append(names, f.Name())
+		}
+		return names
+	}
+}

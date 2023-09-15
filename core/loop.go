@@ -3,14 +3,16 @@ package core
 import (
 	"errors"
 	"fmt"
-	"github.com/chzyer/readline"
 	"gopnzr/core/lang"
 	a "gopnzr/core/shell/args"
+	"gopnzr/core/shell/complete"
 	"gopnzr/core/shell/env"
 	"gopnzr/core/shell/prompt"
 	"gopnzr/core/shell/system"
 	"io"
 	"os"
+
+	"github.com/chzyer/readline"
 )
 
 // main entry point for the shell
@@ -44,7 +46,8 @@ func Shell() {
 	}
 
 	rl, err := readline.NewEx(&readline.Config{
-		Prompt: prompt.ComputePrompt(),
+		Prompt:       prompt.ComputePrompt(),
+		AutoComplete: complete.BuildCompleter(),
 	})
 
 	if err != nil {
@@ -53,8 +56,8 @@ func Shell() {
 	defer rl.Close()
 
 	for {
+		rl.SetPrompt(prompt.ComputePrompt())
 		input, err := rl.Readline()
-
 		if err != nil {
 			if errors.Is(err, io.EOF) {
 				fmt.Println("bye bye, see you :^)")
@@ -69,6 +72,15 @@ func Shell() {
 		if input == "" {
 			continue
 		}
-		lang.Compile(input)
+		run(input)
 	}
+}
+
+func run(input string) {
+	defer func() {
+		if err := recover(); err != nil {
+			fmt.Fprintf(os.Stderr, "err: %s\n", err)
+		}
+	}()
+	lang.Compile(input)
 }

@@ -9,21 +9,19 @@ import (
 	"strings"
 )
 
-// we reuse the builder because we need it for every string and identifier -
-// why reallocate?
-var builder = strings.Builder{}
-
 type Lexer struct {
-	pos   int
-	lPos  int // position on the current line
-	l     int // line position of total buffer
-	in    string
-	inL   int
-	cc    byte // current character
-	error bool
+	pos     int
+	lPos    int // position on the current line
+	l       int // line position of total buffer
+	in      string
+	inL     int
+	cc      byte // current character
+	Builder *strings.Builder
+	error   bool
 }
 
 func (l *Lexer) NewInput(input string) {
+	l.Builder.Reset()
 	l.pos = 0
 	l.lPos = 0
 	l.in = input
@@ -54,8 +52,6 @@ func (l *Lexer) Lex() []tokens.Token {
 			tt = tokens.ASTERIKS
 		case ';':
 			tt = tokens.SEMICOLON
-		case '.':
-			tt = tokens.DOT
 		case '$':
 			tt = tokens.DOLLAR
 		case '"':
@@ -67,17 +63,17 @@ func (l *Lexer) Lex() []tokens.Token {
 			})
 			continue
 		default:
-			if (l.cc >= 'a' && l.cc <= 'z') || (l.cc >= 'A' && l.cc <= 'Z') || l.cc == '-' || l.cc == '/' {
-				i := l.ident()
-				t = append(t, tokens.Token{
-					Pos:  l.pos,
-					Type: tokens.IDENT,
-					Raw:  i,
-				})
-				continue
-			} else {
-				fmt.Fprintf(os.Stderr, "unknown character %q\n", l.cc)
+			i := l.ident()
+			tt := tokens.IDENT
+			if _, isKeyword := tokens.KEYWORDS[i]; isKeyword {
+				tt = tokens.KEYWORD
 			}
+			t = append(t, tokens.Token{
+				Pos:  l.pos,
+				Type: tt,
+				Raw:  i,
+			})
+			continue
 		}
 		if tt != tokens.UNKNOWN {
 			t = append(t, tokens.Token{
@@ -100,25 +96,25 @@ func (l *Lexer) Lex() []tokens.Token {
 }
 
 func (l *Lexer) ident() string {
-	builder.WriteByte(l.cc)
+	l.Builder.WriteByte(l.cc)
 	l.advance()
-	for (l.cc >= 'a' && l.cc <= 'z') || (l.cc >= 'A' && l.cc <= 'Z') || l.cc == '_' || (l.cc >= '0' && l.cc <= '9') || l.cc == '-' || l.cc == '/' {
-		builder.WriteByte(l.cc)
+	for !l.matchAny('&', '|', '=', ';', '$', 0, ' ') {
+		l.Builder.WriteByte(l.cc)
 		l.advance()
 	}
-	str := builder.String()
-	builder.Reset()
+	str := l.Builder.String()
+	l.Builder.Reset()
 	return str
 }
 
 func (l *Lexer) string() string {
 	l.advance() // skip "
 	for l.cc != 0 && l.cc != '"' {
-		builder.WriteByte(l.cc)
+		l.Builder.WriteByte(l.cc)
 		l.advance()
 	}
 
-	str := builder.String()
+	str := l.Builder.String()
 
 	if l.cc != '"' {
 		fmt.Fprintf(os.Stderr, "unterminated string %q\n", str)
@@ -127,8 +123,18 @@ func (l *Lexer) string() string {
 	}
 
 	l.advance() // skip "
-	builder.Reset()
+	l.Builder.Reset()
 	return str
+}
+
+func (l *Lexer) matchAny(ts ...rune) bool {
+	lcr := rune(l.cc)
+	for _, r := range ts {
+		if r == lcr {
+			return true
+		}
+	}
+	return false
 }
 
 func (l *Lexer) advance() {

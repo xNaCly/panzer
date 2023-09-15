@@ -29,3 +29,7 @@ func (c *Cmd) Debug(b *strings.Builder) {
 	}
 	b.WriteRune(']')
 }
+
+func (c *Cmd) GetToken() tokens.Token {
+	return c.Token
+}

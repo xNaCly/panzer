@@ -1,6 +1,6 @@
 module gopnzr
 
-go 1.21.1
+go 1.21
 
 require (
 	github.com/chzyer/readline v1.5.1 // indirect

@@ -17,3 +17,7 @@ func (s *String) Eval() any {
 func (s *String) Debug(b *strings.Builder) {
 	b.WriteString(s.Token.Raw)
 }
+
+func (s *String) GetToken() tokens.Token {
+	return s.Token
+}

@@ -2,8 +2,7 @@ package tokens
 
 import "strings"
 
-func Debug(t []Token) string {
-	b := strings.Builder{}
+func Debug(t []Token, b *strings.Builder) string {
 	for _, c := range t {
 		b.WriteString(LOOKUP[c.Type])
 		b.WriteRune('{')
@@ -11,5 +10,7 @@ func Debug(t []Token) string {
 		b.WriteRune('}')
 		b.WriteRune('\n')
 	}
-	return b.String()
+	str := b.String()
+	b.Reset()
+	return str
 }
