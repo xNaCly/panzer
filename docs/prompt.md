@@ -12,30 +12,30 @@ Currently the following placeholders are supported:
 
 | Placeholder | Description                          |
 | ----------- | ------------------------------------ |
-| `'u`        | name of the currently logged in user |
-| `'h`        | name of the currently active host    |
-| `'w`        | current path / `$PWD` env variable   |
-| `'d`        | name of the current directory        |
+| `\u`        | name of the currently logged in user |
+| `\h`        | name of the currently active host    |
+| `\w`        | current path / `$PWD` env variable   |
+| `\d`        | name of the current directory        |
 
 The following colors are also supported:
 
 | Placeholder | Color          | Escape code |
 | ----------- | -------------- | ----------- |
-| `'0`        | Reset          | `\033[0m`   |
-| `'1`        | Red            | `\033[31m`  |
-| `'2`        | Green          | `\033[32m`  |
-| `'3`        | Yellow         | `\033[33m`  |
-| `'4`        | Bright Red     | `\033[91m`  |
-| `'5`        | Bright Green   | `\033[92m`  |
-| `'6`        | Bright Yellow  | `\033[93m`  |
-| `'7`        | Bright Blue    | `\033[94m`  |
-| `'8`        | Bright Magenta | `\033[95m`  |
-| `'9`        | Bright Cyan    | `\033[96m`  |
+| `\0`        | Reset          | `\033[0m`   |
+| `\1`        | Red            | `\033[31m`  |
+| `\2`        | Green          | `\033[32m`  |
+| `\3`        | Yellow         | `\033[33m`  |
+| `\4`        | Bright Red     | `\033[91m`  |
+| `\5`        | Bright Green   | `\033[92m`  |
+| `\6`        | Bright Yellow  | `\033[93m`  |
+| `\7`        | Bright Blue    | `\033[94m`  |
+| `\8`        | Bright Magenta | `\033[95m`  |
+| `\9`        | Bright Cyan    | `\033[96m`  |
 
 ### Example:
 
 ```gpnzr
-teo@comfyputer /home/teo/programming/gopnzr :: export GPNZR_PROMPT="'u %"
+teo@comfyputer /home/teo/programming/gopnzr :: export GPNZR_PROMPT="\u %"
 teo %
 ```
 
@@ -43,7 +43,7 @@ teo %
 
 Enable any of the following environment variables by setting them to `1`.
 
-| Environment variable     | Description                                  | Effect                                             |
-| ------------------------ | -------------------------------------------- | -------------------------------------------------- |
-|                          | default prompt                               | `teo@comfyputer   /home/teo/programming/gopnzr ::` |
-| `GPNZR_PROMPT_SHORT_PWD` | enables shortening of paths to one character | `teo@comfyputer /h/t/p/g ::`                       |
+| Environment variable     | Description                                  | Effect                                           |
+| ------------------------ | -------------------------------------------- | ------------------------------------------------ |
+|                          | default prompt                               | `teo@comfyputer /home/teo/programming/gopnzr > ` |
+| `GPNZR_PROMPT_SHORT_PWD` | enables shortening of paths to one character | `teo@comfyputer /h/t/p/g > `                     |

@@ -8,7 +8,7 @@ import (
 	"strings"
 )
 
-const DEFAULT_PROMPT = "'7'u'0@'6'h'0 '8'w'0 '2>'0 "
+const DEFAULT_PROMPT = `\7\u\0@\6\h\0 \8\w\0 \2>\0 `
 
 // TODO: support git-branch (b) (either nothing or the branch name, see 'git branch')
 // TODO: support git-status (s) (either nothing or M for modified, see 'git status --short')
@@ -87,7 +87,7 @@ func replacePlaceholders(prompt string) string {
 	b := strings.Builder{}
 	placeHolderMode := false
 	for _, c := range prompt {
-		if c == '\'' {
+		if c == '\\' {
 			placeHolderMode = true
 		} else if placeHolderMode {
 			if t, ok := prompt_placeholders[c]; ok {
