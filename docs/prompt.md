@@ -17,6 +17,21 @@ Currently the following placeholders are supported:
 | `'w`        | current path / `$PWD` env variable   |
 | `'d`        | name of the current directory        |
 
+The following colors are also supported:
+
+| Placeholder | Color          | Escape code |
+| ----------- | -------------- | ----------- |
+| `'0`        | Reset          | `\033[0m`   |
+| `'1`        | Red            | `\033[31m`  |
+| `'2`        | Green          | `\033[32m`  |
+| `'3`        | Yellow         | `\033[33m`  |
+| `'4`        | Bright Red     | `\033[91m`  |
+| `'5`        | Bright Green   | `\033[92m`  |
+| `'6`        | Bright Yellow  | `\033[93m`  |
+| `'7`        | Bright Blue    | `\033[94m`  |
+| `'8`        | Bright Magenta | `\033[95m`  |
+| `'9`        | Bright Cyan    | `\033[96m`  |
+
 ### Example:
 
 ```gpnzr

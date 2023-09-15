@@ -8,7 +8,14 @@ import (
 	"strings"
 )
 
-const DEFAULT_PROMPT = "\033[94m'u\033[0m@\033[93m'h\033[0m \033[95m'd\033[0m \033[32m>\033[0m "
+const DEFAULT_PROMPT = "'7'u'0@'6'h'0 '8'w'0 '2>'0 "
+
+// TODO: support git-branch (b) (either nothing or the branch name, see 'git branch')
+// TODO: support git-status (s) (either nothing or M for modified, see 'git status --short')
+// TODO: support time (t) (hh:mm:ss, 24hr)
+// TODO: support time (T) (hh:mm:ss, 12hr)
+// TODO: support date (D) (yyyy-mm-dd)
+// TODO: shell name (S)
 
 // contains all possible placeholders a prompt could contain
 var prompt_placeholders = map[rune]string{
@@ -16,12 +23,16 @@ var prompt_placeholders = map[rune]string{
 	'h': "",
 	'w': "",
 	'd': "",
-	// TODO: support git-branch (b) (either nothing or the branch name, see 'git branch')
-	// TODO: support git-status (s) (either nothing or M for modified, see 'git status --short')
-	// TODO: support time (t) (hh:mm:ss, 24hr)
-	// TODO: support time (T) (hh:mm:ss, 12hr)
-	// TODO: support date (D) (yyyy-mm-dd)
-	// TODO: shell name (S)
+	'0': "\033[0m",
+	'1': "\033[31m",
+	'2': "\033[32m",
+	'3': "\033[33m",
+	'4': "\033[91m",
+	'5': "\033[92m",
+	'6': "\033[93m",
+	'7': "\033[94m",
+	'8': "\033[95m",
+	'9': "\033[96m",
 }
 
 // computes placeholder values that are known at startup, this decreases load
