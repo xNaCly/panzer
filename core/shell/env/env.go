@@ -1,23 +1,18 @@
 package env
 
-// contains all env variables
-var env_map = map[string]string{
-	"PWD":                    "/",
-	"GPNZR_PROMPT_SHORT_PWD": "",
-}
+import "os"
 
-// returns value for key of 'env_map', false if not found
 func GetEnv(key string) (string, bool) {
-	val, ok := env_map[key]
-	return val, ok
+	val := os.Getenv(key)
+	return val, val != ""
 }
 
 // returns true value for key of 'env_map' equal to 1, false everything else and not found
 func GetEnvBool(key string) (r bool) {
 	r = false
-	val, ok := env_map[key]
+	val := os.Getenv(key)
 
-	if !ok {
+	if val == "" {
 		return
 	}
 
@@ -30,5 +25,5 @@ func GetEnvBool(key string) (r bool) {
 
 // sets key to value in 'env_map'
 func SetEnv(key string, value string) {
-	env_map[key] = value
+	os.Setenv(key, value)
 }
