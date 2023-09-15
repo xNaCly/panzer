@@ -6,6 +6,7 @@ import (
 	"os"
 	"os/user"
 	"strings"
+	"time"
 )
 
 const DEFAULT_PROMPT = `\7\u\0@\6\h\0 \8\w\0 \2>\0 `
@@ -14,7 +15,6 @@ const DEFAULT_PROMPT = `\7\u\0@\6\h\0 \8\w\0 \2>\0 `
 // TODO: support git-status (s) (either nothing or M for modified, see 'git status --short')
 // TODO: support time (t) (hh:mm:ss, 24hr)
 // TODO: support time (T) (hh:mm:ss, 12hr)
-// TODO: support date (D) (yyyy-mm-dd)
 // TODO: shell name (S)
 
 // contains all possible placeholders a prompt could contain
@@ -23,6 +23,7 @@ var prompt_placeholders = map[rune]string{
 	'h': "",
 	'w': "",
 	'd': "",
+	'D': "",
 	'0': "\033[0m",
 	'1': "\033[31m",
 	'2': "\033[32m",
@@ -41,9 +42,12 @@ func PreComputePlaceholders() (e error) {
 	u, e := user.Current()
 
 	prompt_placeholders['u'] = u.Username
-	pwd, _ := env.GetEnv("PWD")
-	prompt_placeholders['w'] = pwd
+	prompt_placeholders['w'] = system.Getwd()
 	prompt_placeholders['d'] = system.Getdir()
+
+	// date only needs to be computed at startup, who keeps their shell active
+	// more than a day?
+	prompt_placeholders['D'] = time.Now().Format(time.DateOnly)
 
 	h, e := os.Hostname()
 	prompt_placeholders['h'] = h

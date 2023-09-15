@@ -10,12 +10,13 @@ name of the currently logged in user.
 
 Currently the following placeholders are supported:
 
-| Placeholder | Description                          |
-| ----------- | ------------------------------------ |
-| `\u`        | name of the currently logged in user |
-| `\h`        | name of the currently active host    |
-| `\w`        | current path / `$PWD` env variable   |
-| `\d`        | name of the current directory        |
+| Placeholder | Description                          | Computation time                 |
+| ----------- | ------------------------------------ | -------------------------------- |
+| `\u`        | name of the currently logged in user | shell startup                    |
+| `\h`        | name of the currently active host    | shell startup                    |
+| `\w`        | current path / `$PWD` env variable   | directory change & shell startup |
+| `\d`        | name of the current directory        | directory change & shell startup |
+| `\D`        | current date                         | shell startup                    |
 
 The following colors are also supported:
 

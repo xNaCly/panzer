@@ -2,7 +2,6 @@
 package system
 
 import (
-	"gopnzr/core/shell/env"
 	"os"
 	"path"
 )
@@ -20,12 +19,7 @@ func Getwd() (wd string) {
 
 // returns only the name of the current directory or /
 func Getdir() (dir string) {
-	pwd, ok := env.GetEnv("PWD")
-	dir = "/"
-	if !ok {
-		return
-	}
-	wd := path.Base(pwd)
+	wd := path.Base(Getwd())
 	if wd == "." {
 		return
 	}
