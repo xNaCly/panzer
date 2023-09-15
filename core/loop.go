@@ -41,7 +41,7 @@ func Shell() {
 	}
 
 	if args.Command != "" {
-		lang.Compile(args.Command)
+		run(args.Command)
 		return
 	}
 
@@ -79,7 +79,7 @@ func Shell() {
 func run(input string) {
 	defer func() {
 		if err := recover(); err != nil {
-			fmt.Fprintf(os.Stderr, "err: %s\n", err)
+			fmt.Fprintf(os.Stderr, "err: %s", err)
 		}
 	}()
 	lang.Compile(input)
