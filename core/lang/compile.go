@@ -27,6 +27,7 @@ func Compile(input string) {
 	fmt.Println(tokens.Debug(token, &b))
 	par.NewInput(token)
 	ast := par.Parser()
+	fmt.Println(expressions.Debug(ast, &b))
 	exec(ast)
 }
 

@@ -9,8 +9,8 @@ import (
 // computed from: ls -la -> Cmd{Name:"ls", Arguments: []string{"-la"}}
 type Cmd struct {
 	Token     tokens.Token
-	Name      string
-	Arguments []string
+	Name      Expr
+	Arguments []Expr
 }
 
 func (c *Cmd) Eval() any {
@@ -18,13 +18,13 @@ func (c *Cmd) Eval() any {
 }
 
 func (c *Cmd) Debug(b *strings.Builder) {
-	b.WriteString(c.Name)
+	b.WriteString("CMD:")
+	b.WriteString(c.Token.Raw)
 	b.WriteRune('[')
-	cl := len(c.Arguments)
 	for i, ch := range c.Arguments {
-		b.WriteString(ch)
-		if i+1 < cl {
-			b.WriteRune(' ')
+		ch.Debug(b)
+		if i+1 < len(c.Arguments) {
+			b.WriteRune(',')
 		}
 	}
 	b.WriteRune(']')

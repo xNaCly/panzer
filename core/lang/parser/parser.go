@@ -41,6 +41,8 @@ func (p *Parser) parse() expressions.Expr {
 	var expr expressions.Expr
 	if p.peekEquals(tokens.KEYWORD) {
 		expr = p.keywords()
+	} else if p.matchAny(tokens.IDENT) {
+		expr = p.command()
 	} else {
 		expr = p.consts()
 	}
@@ -53,9 +55,23 @@ func (p *Parser) consts() expressions.Expr {
 		expr = &expressions.String{Token: p.peek()}
 	} else if p.peekEquals(tokens.IDENT) {
 		expr = &expressions.Ident{Token: p.peek()}
-	} else {
-		panic("todo@p.consts: " + tokens.LOOKUP[p.peek().Type])
 	}
+	return expr
+}
+
+func (p *Parser) command() expressions.Expr {
+	expr := &expressions.Cmd{
+		Token:     p.peek(),
+		Arguments: make([]expressions.Expr, 0),
+	}
+	expr.Name = p.consts()
+	p.advance()
+
+	for !p.matchAny(tokens.PIPE, tokens.SEMICOLON, tokens.AND, tokens.EOF) {
+		expr.Arguments = append(expr.Arguments, p.consts())
+		p.advance()
+	}
+
 	return expr
 }
 

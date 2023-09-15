@@ -13,8 +13,12 @@ type Expr interface {
 }
 
 func Debug(ast []Expr, b *strings.Builder) string {
-	for _, c := range ast {
+	astL := len(ast)
+	for i, c := range ast {
 		c.Debug(b)
+		if i+1 < astL {
+			b.WriteRune('\n')
+		}
 	}
 	str := b.String()
 	b.Reset()
