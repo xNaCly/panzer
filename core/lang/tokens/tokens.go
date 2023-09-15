@@ -1,9 +1,10 @@
 package tokens
 
 var KEYWORDS = map[string]struct{}{
-	"cd":  {},
-	"set": {},
-	"env": {},
+	"cd":   {},
+	"set":  {},
+	"env":  {},
+	"exit": {},
 }
 
 const (
