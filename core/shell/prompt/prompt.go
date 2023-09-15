@@ -58,7 +58,7 @@ func PreComputePlaceholders() (e error) {
 // prompt with placeholders replaced
 func ComputePrompt() string {
 	prompt := DEFAULT_PROMPT
-	if val, ok := env.GetEnv("GPNZR_PROMPT"); ok {
+	if val, ok := env.GetEnv("PROMPT"); ok {
 		prompt = val
 	}
 	return replacePlaceholders(prompt)
@@ -66,9 +66,10 @@ func ComputePrompt() string {
 
 // formats the working directory according to the configuration
 func formatWd(path string) string {
-	if !env.GetEnvBool("GPNZR_PROMPT_SHORT_PWD") {
+	if !env.GetEnvBool("PROMPT_SHORT") {
 		return path
 	}
+	// BUG: on each reprint the path gets a char shorter, rework this
 	b := strings.Builder{}
 	var lc rune
 	for _, c := range path {

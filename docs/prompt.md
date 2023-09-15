@@ -2,7 +2,7 @@
 
 ## Placeholders
 
-gpnzr supports prompt customization via placeholders in the `GPNZR_PROMPT`
+gpnzr supports prompt customization via placeholders in the `PROMPT`
 environment variable.
 
 A placeholder is a character prefixed with a backslash, such as `\u` for the
@@ -36,7 +36,7 @@ The following colors are also supported:
 ### Example:
 
 ```gpnzr
-teo@comfyputer /home/teo/programming/gopnzr :: set GPNZR_PROMPT "\u %"
+teo@comfyputer /home/teo/programming/gopnzr :: set PROMPT "\u %"
 teo %
 ```
 
@@ -44,7 +44,7 @@ teo %
 
 Enable any of the following environment variables by setting them to `1`.
 
-| Environment variable     | Description                                  | Effect                                           |
-| ------------------------ | -------------------------------------------- | ------------------------------------------------ |
-|                          | default prompt                               | `teo@comfyputer /home/teo/programming/gopnzr > ` |
-| `GPNZR_PROMPT_SHORT_PWD` | enables shortening of paths to one character | `teo@comfyputer /h/t/p/g > `                     |
+| Environment variable | Description                                  | Effect                                           |
+| -------------------- | -------------------------------------------- | ------------------------------------------------ |
+|                      | default prompt                               | `teo@comfyputer /home/teo/programming/gopnzr > ` |
+| `PROMPT_SHORT`       | enables shortening of paths to one character | `teo@comfyputer /h/t/p/g > `                     |
