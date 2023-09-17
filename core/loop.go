@@ -1,5 +1,7 @@
 package core
 
+// TODO: rip readline out and replace it with my own implementation
+
 import (
 	"errors"
 	"fmt"
