@@ -2,6 +2,7 @@ package expressions
 
 import (
 	"gopnzr/core/lang/tokens"
+	"gopnzr/core/shell/expansions"
 	"os"
 	"os/exec"
 	"strings"
@@ -16,11 +17,15 @@ type Cmd struct {
 }
 
 func (c *Cmd) Eval() any {
-	l := len(c.Arguments)
-	args := make([]string, l)
-	for i := 0; i < l; i++ {
-		str := c.Arguments[i].GetToken().Raw
-		args[i] = str
+	args := make([]string, 0)
+	for _, e := range c.Arguments {
+		t := e.GetToken()
+		str := t.Raw
+		if t.ContainsPattern {
+			args = append(args, expansions.MatchFiles(str)...)
+		} else {
+			args = append(args, str)
+		}
 	}
 	cmd := exec.Command(c.Name.GetToken().Raw, args...)
 	cmd.Stderr = os.Stderr
