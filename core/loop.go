@@ -82,6 +82,9 @@ func Shell() {
 
 func run(input string, args *a.Arguments) {
 	defer func() {
+		if args.Debug {
+			return
+		}
 		if err := recover(); err != nil {
 			log.Print(err)
 		}
