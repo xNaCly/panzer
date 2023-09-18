@@ -63,16 +63,7 @@ func (l *Lexer) Lex() []tokens.Token {
 			})
 			continue
 		default:
-			i := l.ident()
-			tt := tokens.IDENT
-			if _, isKeyword := tokens.KEYWORDS[i]; isKeyword {
-				tt = tokens.KEYWORD
-			}
-			t = append(t, tokens.Token{
-				Pos:  l.pos,
-				Type: tt,
-				Raw:  i,
-			})
+			t = append(t, l.ident())
 			continue
 		}
 		if tt != tokens.UNKNOWN {
@@ -92,19 +83,32 @@ func (l *Lexer) Lex() []tokens.Token {
 	return t
 }
 
-func (l *Lexer) ident() string {
+func (l *Lexer) ident() tokens.Token {
+	var hasPattern bool
 	if l.cc == '=' {
 		panic("got = at identifier, you probably wanted to define an environment variable, use 'set VARIABLE_NAME value' instead")
 	}
-	l.Builder.WriteByte(l.cc)
-	l.advance()
 	for !l.matchAny('&', '|', '=', ';', '$', 0, ' ') {
+		if !hasPattern && (l.cc == '?' || l.cc == '*') {
+			hasPattern = true
+		}
 		l.Builder.WriteByte(l.cc)
 		l.advance()
 	}
 	str := l.Builder.String()
 	l.Builder.Reset()
-	return str
+
+	tt := tokens.IDENT
+	if _, isKeyword := tokens.KEYWORDS[str]; isKeyword {
+		tt = tokens.KEYWORD
+	}
+
+	return tokens.Token{
+		Pos:             l.lPos,
+		Type:            tt,
+		Raw:             str,
+		ContainsPattern: hasPattern,
+	}
 }
 
 func (l *Lexer) string() string {
