@@ -6,19 +6,29 @@ package keywords
 import (
 	"fmt"
 	"gopnzr/core/shell/prompt"
+	"gopnzr/core/shell/system"
 	"os"
 )
 
+// resolves the dir from the given argument, checks if the target is a dir,
+// changes process working directory to the target
 func Cd(args ...string) {
 	al := len(args)
+	dir := ""
 	if al > 1 {
+		// cd can not accept more than 1 argument
 		panic("Too many arguments for cd")
 	} else if al == 0 {
-		panic("no path given for cd")
+		// no arguments, means we want to go $HOME
+		dir = "~"
+	} else {
+		dir = args[0]
 	}
 
-	dir := args[0]
-	resolvedDir := ""
+	// we skip cd if we are already at the desired path
+	if dir == system.Getwd() {
+		return
+	}
 
 	switch dir {
 	case "~":
@@ -26,26 +36,26 @@ func Cd(args ...string) {
 		if err != nil {
 			h = "/"
 		}
-		resolvedDir = h
+		dir = h
 	case ".":
+		// we skip changing dir due to us already being at .
 		return
-	default:
-		resolvedDir = dir
 	}
 
-	data, err := os.Stat(resolvedDir)
+	data, err := os.Stat(dir)
 	if err != nil {
-		panic(fmt.Sprintf("cd: the directory %q does not exist", resolvedDir))
+		panic(fmt.Sprintf("cd: the directory %q does not exist", dir))
 	}
 
 	if !data.IsDir() {
-		panic(fmt.Sprintf("cd: %q is not a directory", resolvedDir))
+		panic(fmt.Sprintf("cd: %q is not a directory", dir))
 	}
 
-	err = os.Chdir(resolvedDir)
+	err = os.Chdir(dir)
 	if err != nil {
 		panic(err)
 	}
 
+	// we changed the directory, we need to update the prompt
 	prompt.UpdatePrompt()
 }
