@@ -1,3 +1,4 @@
+// prompt generation, prompt placeholder computation
 package prompt
 
 import (

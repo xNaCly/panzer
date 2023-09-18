@@ -8,6 +8,7 @@ import (
 	"gopnzr/core/lang"
 	a "gopnzr/core/shell/args"
 	"gopnzr/core/shell/complete"
+	"gopnzr/core/shell/config"
 	"gopnzr/core/shell/env"
 	"gopnzr/core/shell/prompt"
 	"gopnzr/core/shell/system"
@@ -43,6 +44,8 @@ func Shell() {
 	if err != nil {
 		log.Printf("error while computing prompt placeholders: %s\n", err)
 	}
+
+	config.Load(&args)
 
 	if args.Command != "" {
 		run(args.Command, &args)
