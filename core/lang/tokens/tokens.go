@@ -12,7 +12,6 @@ const (
 	EOF                        // END OF INPUT
 	PIPE                       // |
 	AND                        // &
-	ASTERIKS                   // *
 	SEMICOLON                  // ;
 	DOLLAR                     // $
 	STRING                     // ".*"
@@ -25,7 +24,6 @@ var LOOKUP = map[TokenType]string{
 	EOF:       "EOF",
 	PIPE:      "PIPE",
 	AND:       "AND",
-	ASTERIKS:  "ASTERIKS",
 	SEMICOLON: "SEMICOLON",
 	DOLLAR:    "DOLLAR",
 	STRING:    "STRING",
