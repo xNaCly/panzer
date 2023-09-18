@@ -37,6 +37,11 @@ func (l *Lexer) Lex() []tokens.Token {
 			l.advance()
 			continue
 		case '\n':
+			// insert semicolon on enter, this enables the configuration
+			t = append(t, tokens.Token{
+				Pos:  l.pos,
+				Type: tokens.SEMICOLON,
+			})
 			l.lPos = 0
 			l.l++
 			l.advance()
