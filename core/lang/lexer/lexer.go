@@ -36,6 +36,12 @@ func (l *Lexer) Lex() []tokens.Token {
 		case ' ', '\t':
 			l.advance()
 			continue
+		case '#':
+			for l.cc != 0 && l.cc != '\n' {
+				l.advance()
+			}
+			l.advance()
+			continue
 		case '\n':
 			// insert semicolon on enter, this enables the configuration
 			t = append(t, tokens.Token{
