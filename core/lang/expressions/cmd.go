@@ -2,6 +2,8 @@ package expressions
 
 import (
 	"gopnzr/core/lang/tokens"
+	"os"
+	"os/exec"
 	"strings"
 )
 
@@ -14,7 +16,20 @@ type Cmd struct {
 }
 
 func (c *Cmd) Eval() any {
-	return ""
+	l := len(c.Arguments)
+	args := make([]string, l)
+	for i := 0; i < l; i++ {
+		str := c.Arguments[i].GetToken().Raw
+		args[i] = str
+	}
+	cmd := exec.Command(c.Name.GetToken().Raw, args...)
+	cmd.Stderr = os.Stderr
+	cmd.Stdout = os.Stdout
+	err := cmd.Run()
+	if err != nil {
+		panic(err)
+	}
+	return nil
 }
 
 func (c *Cmd) Debug(b *strings.Builder) {

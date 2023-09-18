@@ -12,6 +12,7 @@ import (
 	"gopnzr/core/shell/prompt"
 	"gopnzr/core/shell/system"
 	"io"
+	"log"
 	"os"
 
 	"github.com/chzyer/readline"
@@ -35,15 +36,16 @@ import (
 //   - exiting on EOF (Ctrl+D)
 func Shell() {
 	args := a.Get()
+	log.SetFlags(0)
 	env.SetEnv("PWD", system.Getwd())
 
 	err := prompt.PreComputePlaceholders()
 	if err != nil {
-		fmt.Fprintln(os.Stderr, "error while computing prompt placeholders: ", err)
+		log.Printf("error while computing prompt placeholders: %s\n", err)
 	}
 
 	if args.Command != "" {
-		run(args.Command)
+		run(args.Command, &args)
 		return
 	}
 
@@ -74,15 +76,15 @@ func Shell() {
 		if input == "" {
 			continue
 		}
-		run(input)
+		run(input, &args)
 	}
 }
 
-func run(input string) {
+func run(input string, args *a.Arguments) {
 	defer func() {
 		if err := recover(); err != nil {
-			fmt.Fprintf(os.Stderr, "err: %s", err)
+			log.Printf("err: %s\n", err)
 		}
 	}()
-	lang.Compile(input)
+	lang.Compile(input, args)
 }

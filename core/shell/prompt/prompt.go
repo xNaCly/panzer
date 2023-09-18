@@ -39,8 +39,6 @@ func PreComputePlaceholders() (e error) {
 	u, e := user.Current()
 
 	prompt_placeholders['u'] = u.Username
-	prompt_placeholders['w'] = system.Getwd()
-	prompt_placeholders['d'] = system.Getdir()
 
 	// date only needs to be computed at startup, who keeps their shell active
 	// more than a day?
@@ -60,6 +58,8 @@ func UpdatePrompt() {
 	t := time.Now()
 	prompt_placeholders['t'] = t.Format(time.TimeOnly)
 	prompt_placeholders['T'] = t.Format("03:04:05PM")
+	prompt_placeholders['w'] = system.Getwd()
+	prompt_placeholders['d'] = system.Getdir()
 }
 
 // checks if custom prompt is set, returns either that prompt or the default

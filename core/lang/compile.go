@@ -6,6 +6,7 @@ import (
 	"gopnzr/core/lang/lexer"
 	"gopnzr/core/lang/parser"
 	"gopnzr/core/lang/tokens"
+	"gopnzr/core/shell/args"
 	"strings"
 )
 
@@ -21,13 +22,17 @@ var lex = lexer.Lexer{
 // we do the same for the parser
 var par = parser.Parser{}
 
-func Compile(input string) {
+func Compile(input string, a *args.Arguments) {
 	lex.NewInput(input)
 	token := lex.Lex()
-	fmt.Println(tokens.Debug(token, &b))
+	if a.Debug {
+		fmt.Println(tokens.Debug(token, &b))
+	}
 	par.NewInput(token)
 	ast := par.Parser()
-	fmt.Println(expressions.Debug(ast, &b))
+	if a.Debug {
+		fmt.Println(expressions.Debug(ast, &b))
+	}
 	exec(ast)
 }
 

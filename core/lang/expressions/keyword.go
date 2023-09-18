@@ -3,6 +3,7 @@ package expressions
 import (
 	"gopnzr/core/lang/keywords"
 	"gopnzr/core/lang/tokens"
+	"os"
 	"strings"
 )
 
@@ -12,12 +13,15 @@ type Keyword struct {
 }
 
 func (k *Keyword) Eval() any {
+	// TEST: does this make execution faster, due to skipping argument construction?
+	if k.Token.Raw == "exit" {
+		os.Exit(0)
+	}
 	l := len(k.Arguments)
 	args := make([]string, l)
 	for i := 0; i < l; i++ {
-		if str, ok := k.Arguments[i].Eval().(string); ok {
-			args[i] = str
-		}
+		str := castOrPanic[string](k.Arguments[i].Eval())
+		args[i] = str
 	}
 	keywords.KEYWORD_MAP[k.Token.Raw](args...)
 	return nil
