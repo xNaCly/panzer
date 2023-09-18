@@ -83,7 +83,7 @@ func Shell() {
 func run(input string, args *a.Arguments) {
 	defer func() {
 		if err := recover(); err != nil {
-			log.Printf("err: %s\n", err)
+			log.Print(err)
 		}
 	}()
 	lang.Compile(input, args)

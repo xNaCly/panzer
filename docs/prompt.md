@@ -38,7 +38,7 @@ The following colors are also supported:
 ### Example:
 
 ```gpnzr
-teo@comfyputer /home/teo/programming/gopnzr :: set PROMPT "\u %"
+teo@comfyputer ~/programming/gopnzr :: set PROMPT "\u %"
 teo %
 ```
 
@@ -46,7 +46,6 @@ teo %
 
 Enable any of the following environment variables by setting them to `1`.
 
-| Environment variable | Description                                  | Effect                                           |
-| -------------------- | -------------------------------------------- | ------------------------------------------------ |
-|                      | default prompt                               | `teo@comfyputer /home/teo/programming/gopnzr > ` |
-| `PROMPT_SHORT`       | enables shortening of paths to one character | `teo@comfyputer /h/t/p/g > `                     |
+| Environment variable | Description    | Effect                                   |
+| -------------------- | -------------- | ---------------------------------------- |
+|                      | default prompt | `teo@comfyputer ~/programming/gopnzr > ` |

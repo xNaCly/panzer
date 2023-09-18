@@ -9,6 +9,8 @@ import (
 	"time"
 )
 
+var HOME = "/"
+
 const DEFAULT_PROMPT = `\7\u\0@\6\h\0 \8\w\0 \2>\0 `
 
 // contains all possible placeholders a prompt could contain
@@ -35,6 +37,7 @@ var prompt_placeholders = map[rune]string{
 // computes placeholder values that are known at startup, this decreases load
 // on the main loop prompt computation
 func PreComputePlaceholders() (e error) {
+	HOME, _ = os.UserHomeDir()
 	// TODO: shell name (S)
 	u, e := user.Current()
 
@@ -75,19 +78,21 @@ func ComputePrompt() string {
 
 // formats the working directory according to the configuration
 func formatWd(path string) string {
-	if !env.GetEnvBool("PROMPT_SHORT") {
-		return path
+	if path == HOME {
+		return "~"
 	}
-	// BUG: on each reprint the path gets a char shorter, rework this
+
 	b := strings.Builder{}
-	var lc rune
+
 	for _, c := range path {
-		if lc == '/' {
-			b.WriteRune(c)
-			b.WriteRune('/')
+		str := b.String()
+		if str == HOME {
+			b.Reset()
+			b.WriteRune('~')
 		}
-		lc = c
+		b.WriteRune(c)
 	}
+
 	return b.String()
 }
 
