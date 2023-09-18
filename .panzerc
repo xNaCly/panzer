@@ -1,3 +1,2 @@
 set PROMPT "\u \d $ "
-set PROMPT_SHORT "1"
 set EDITOR "nvim"
