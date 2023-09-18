@@ -55,7 +55,19 @@ func (p *Parser) consts() expressions.Expr {
 		expr = &expressions.String{Token: p.peek()}
 	} else if p.peekEquals(tokens.IDENT) {
 		expr = &expressions.Ident{Token: p.peek()}
+	} else if p.peekEquals(tokens.DOLLAR) {
+		expr = p.variable()
 	}
+
+	return expr
+}
+
+func (p *Parser) variable() expressions.Expr {
+	p.advance() // skip dollar
+	expr := &expressions.Var{
+		Token: p.peek(),
+	}
+	p.expect(tokens.IDENT)
 	return expr
 }
 

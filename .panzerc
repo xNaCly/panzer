@@ -1,2 +1,4 @@
+# customize prompt
 set PROMPT "\u \d $ "
+# set env variable
 set EDITOR "nvim"

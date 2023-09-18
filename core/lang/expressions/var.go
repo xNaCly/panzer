@@ -1,7 +1,6 @@
 package expressions
 
 import (
-	"fmt"
 	"gopnzr/core/lang/tokens"
 	"gopnzr/core/shell/env"
 	"strings"
@@ -9,20 +8,19 @@ import (
 
 type Var struct {
 	Token tokens.Token
-	Name  string
 }
 
 func (v *Var) Eval() any {
-	val, ok := env.GetEnv(v.Name)
+	val, ok := env.GetEnv(v.Token.Raw)
 	if !ok {
-		panic(fmt.Sprintf("Undefined variable $%s\n", val))
+		return ""
 	}
 	return val
 }
 
 func (v *Var) Debug(b *strings.Builder) {
 	b.WriteRune('$')
-	b.WriteString(v.Name)
+	b.WriteString(v.Token.Raw)
 }
 
 func (v *Var) GetToken() tokens.Token {

@@ -18,3 +18,9 @@ gopnzr - a minimal, fast and fun to use shell written in go
 - [x] minimal configuration file
 - [x] no posix or bash compatibility - none!
 - [ ] history list
+- [x] variables
+- completion engine
+  - [ ] available files (in current dir)
+  - [ ] available commands
+  - [ ] available cli flags `ls <option/flag>`
+  - [ ] available man pages, `man <page>`
