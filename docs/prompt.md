@@ -17,6 +17,8 @@ Currently the following placeholders are supported:
 | `\w`        | current path / `$PWD` env variable   | directory change & shell startup |
 | `\d`        | name of the current directory        | directory change & shell startup |
 | `\D`        | current date                         | shell startup                    |
+| `\t`        | current time (24h) `15:04:05`        | directory change & shell startup |
+| `\T`        | current time (12h) `03:04:05PM`      | directory change & shell startup |
 
 The following colors are also supported:
 

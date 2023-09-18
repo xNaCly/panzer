@@ -11,12 +11,6 @@ import (
 
 const DEFAULT_PROMPT = `\7\u\0@\6\h\0 \8\w\0 \2>\0 `
 
-// TODO: support git-branch (b) (either nothing or the branch name, see 'git branch')
-// TODO: support git-status (s) (either nothing or M for modified, see 'git status --short')
-// TODO: support time (t) (hh:mm:ss, 24hr)
-// TODO: support time (T) (hh:mm:ss, 12hr)
-// TODO: shell name (S)
-
 // contains all possible placeholders a prompt could contain
 var prompt_placeholders = map[rune]string{
 	'u': "",
@@ -24,6 +18,8 @@ var prompt_placeholders = map[rune]string{
 	'w': "",
 	'd': "",
 	'D': "",
+	't': "",
+	'T': "",
 	'0': "\033[0m",
 	'1': "\033[31m",
 	'2': "\033[32m",
@@ -39,6 +35,7 @@ var prompt_placeholders = map[rune]string{
 // computes placeholder values that are known at startup, this decreases load
 // on the main loop prompt computation
 func PreComputePlaceholders() (e error) {
+	// TODO: shell name (S)
 	u, e := user.Current()
 
 	prompt_placeholders['u'] = u.Username
@@ -51,12 +48,24 @@ func PreComputePlaceholders() (e error) {
 
 	h, e := os.Hostname()
 	prompt_placeholders['h'] = h
+
 	return
+}
+
+// updates all values in the placeholders map that are either unknown at
+// startup or require recomputation on a prompt redraw, such as cwd and time
+func UpdatePrompt() {
+	// TODO: support git-branch (b) (either nothing or the branch name, see 'git branch')
+	// TODO: support git-status (s) (either nothing or M for modified, see 'git status --short')
+	t := time.Now()
+	prompt_placeholders['t'] = t.Format(time.TimeOnly)
+	prompt_placeholders['T'] = t.Format("03:04:05PM")
 }
 
 // checks if custom prompt is set, returns either that prompt or the default
 // prompt with placeholders replaced
 func ComputePrompt() string {
+	UpdatePrompt()
 	prompt := DEFAULT_PROMPT
 	if val, ok := env.GetEnv("PROMPT"); ok {
 		prompt = val
@@ -92,7 +101,9 @@ func replacePlaceholders(prompt string) string {
 	b := strings.Builder{}
 	placeHolderMode := false
 	for _, c := range prompt {
-		if c == '\\' {
+		if c == '\\' && placeHolderMode {
+			b.WriteRune('\\')
+		} else if c == '\\' {
 			placeHolderMode = true
 		} else if placeHolderMode {
 			if t, ok := prompt_placeholders[c]; ok {
