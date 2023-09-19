@@ -1,4 +1,27 @@
-# customize prompt
-set PROMPT "\u \d $ "
-# set env variable
+# xnacly's panzer config
+# https://github.com/xnacly
+
+# --- env ---
+set PROMPT "\9\d\0 \8>\0 "
 set EDITOR "nvim"
+
+# --- alias ---
+alias .. "cd .."
+
+# vim
+alias vim "nvim"
+
+alias ls "exa"
+alias l "exa"
+alias la "exa -la"
+alias tree "exa --tree --level=4 --icons --git"
+
+# git
+alias gs "git status"
+alias ga "git add -A"
+alias gpl "git pull"
+alias gps "git push"
+alias gc "git commit -m "
+
+# wsl
+alias c "cmd.exe /c "

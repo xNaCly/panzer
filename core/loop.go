@@ -39,6 +39,8 @@ func Shell() {
 	args := a.Get()
 	log.SetFlags(0)
 	env.SetEnv("PWD", system.Getwd())
+	exe, _ := os.Executable()
+	env.SetEnv("SHELL", exe)
 
 	err := prompt.PreComputePlaceholders()
 	if err != nil {

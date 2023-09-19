@@ -43,11 +43,14 @@ func (l *Lexer) Lex() []tokens.Token {
 			l.advance()
 			continue
 		case '\n':
-			// insert semicolon on enter, this enables the configuration
-			t = append(t, tokens.Token{
-				Pos:  l.pos,
-				Type: tokens.SEMICOLON,
-			})
+			tl := len(t)
+			if tl > 0 && !matchTokens(t[tl-1].Type, tokens.SEMICOLON) {
+				// insert semicolon on enter, this enables the configuration
+				t = append(t, tokens.Token{
+					Pos:  l.pos,
+					Type: tokens.SEMICOLON,
+				})
+			}
 			l.lPos = 0
 			l.l++
 			l.advance()
@@ -58,8 +61,6 @@ func (l *Lexer) Lex() []tokens.Token {
 			tt = tokens.AND
 		case ';':
 			tt = tokens.SEMICOLON
-		case '$':
-			tt = tokens.DOLLAR
 		case '"':
 			i := l.string()
 			t = append(t, tokens.Token{
@@ -153,4 +154,13 @@ func (l *Lexer) advance() {
 	} else {
 		l.cc = 0
 	}
+}
+
+func matchTokens(t tokens.TokenType, token ...tokens.TokenType) bool {
+	for _, tt := range token {
+		if t == tt {
+			return true
+		}
+	}
+	return false
 }

@@ -17,7 +17,7 @@ func Getwd() (wd string) {
 	return
 }
 
-// returns only the name of the current directory or /
+// returns only the name of the current directory, replaces ~ with home
 func Getdir() (dir string) {
 	wd := path.Base(Getwd())
 	if wd == "." {

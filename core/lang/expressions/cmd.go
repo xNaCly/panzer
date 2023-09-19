@@ -20,6 +20,7 @@ func (c *Cmd) Eval() any {
 	args := make([]string, 0)
 	for _, e := range c.Arguments {
 		t := e.GetToken()
+
 		if t.ContainsPattern {
 			args = append(args, expansions.MatchFiles(t.Raw)...)
 		} else {
@@ -30,17 +31,19 @@ func (c *Cmd) Eval() any {
 			args = append(args, val)
 		}
 	}
-	val, ok := c.Name.Eval().(string)
-	if !ok {
-		panic("failure in command prep")
-	}
-	cmd := exec.Command(val, args...)
+
+	cmd := exec.Command(c.Name.GetToken().Raw, args...)
 	cmd.Stderr = os.Stderr
 	cmd.Stdout = os.Stdout
 	err := cmd.Run()
+
 	if err != nil {
-		panic(err)
+		succ := cmd.ProcessState.ExitCode()
+		if succ == -1 {
+			panic(err)
+		}
 	}
+
 	return nil
 }
 

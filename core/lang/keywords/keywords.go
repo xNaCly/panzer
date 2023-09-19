@@ -7,7 +7,8 @@ package keywords
 
 // maps keywords to their functions
 var KEYWORD_MAP = map[string]func(args ...string){
-	"env": Env,
-	"set": Set,
-	"cd":  Cd,
+	"env":   Env,
+	"set":   Set,
+	"cd":    Cd,
+	"alias": Alias,
 }

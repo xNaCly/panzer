@@ -5,6 +5,7 @@ import (
 	"gopnzr/core/lang/expressions"
 	"gopnzr/core/lang/lexer"
 	"gopnzr/core/lang/parser"
+	"gopnzr/core/lang/preprocessor"
 	"gopnzr/core/lang/tokens"
 	"gopnzr/core/shell/args"
 	"strings"
@@ -15,6 +16,11 @@ import (
 var b = strings.Builder{}
 
 // we reuse the lexer to skip a lexer allocation for each input the shell gets
+var prep = preprocessor.Preprocessor{
+	Builder: &b,
+}
+
+// we reuse the lexer to skip a lexer allocation for each input the shell gets
 var lex = lexer.Lexer{
 	Builder: &b,
 }
@@ -23,16 +29,23 @@ var lex = lexer.Lexer{
 var par = parser.Parser{}
 
 func Compile(input string, a *args.Arguments) {
+	prep.NewInput(input)
+	input = prep.Process()
+
 	lex.NewInput(input)
 	token := lex.Lex()
+
 	if a.Debug {
 		fmt.Println(tokens.Debug(token, &b))
 	}
+
 	par.NewInput(token)
 	ast := par.Parser()
+
 	if a.Debug {
 		fmt.Println(expressions.Debug(ast, &b))
 	}
+
 	exec(ast)
 }
 

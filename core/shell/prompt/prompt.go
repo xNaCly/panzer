@@ -63,7 +63,11 @@ func UpdatePrompt() {
 	prompt_placeholders['t'] = t.Format(time.TimeOnly)
 	prompt_placeholders['T'] = t.Format("03:04:05PM")
 	prompt_placeholders['w'] = system.Getwd()
-	prompt_placeholders['d'] = system.Getdir()
+	dir := system.Getdir()
+	if dir == prompt_placeholders['u'] {
+		dir = "~"
+	}
+	prompt_placeholders['d'] = dir
 }
 
 // checks if custom prompt is set, returns either that prompt or the default

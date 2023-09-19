@@ -3,7 +3,8 @@
 //		str      -> ".+"
 //		ident    -> [A-Za-z\-]+[_0-9/]*
 //		const    -> str | ident
-//		var      -> 'set' ident const
+//		varDef   -> 'set' ident const
+//		varUse   -> '$' ident
 //		cmd      -> const+
 //	    cmdSep   -> '|' | ';' | '&&' | '>>' | '>'
 //		cmd      -> cmd cmdSep cmd
@@ -53,21 +54,11 @@ func (p *Parser) consts() expressions.Expr {
 	var expr expressions.Expr
 	if p.peekEquals(tokens.STRING) {
 		expr = &expressions.String{Token: p.peek()}
+		p.advance()
 	} else if p.peekEquals(tokens.IDENT) {
 		expr = &expressions.Ident{Token: p.peek()}
-	} else if p.peekEquals(tokens.DOLLAR) {
-		expr = p.variable()
+		p.advance()
 	}
-
-	return expr
-}
-
-func (p *Parser) variable() expressions.Expr {
-	p.advance() // skip dollar
-	expr := &expressions.Var{
-		Token: p.peek(),
-	}
-	p.expect(tokens.IDENT)
 	return expr
 }
 
@@ -77,11 +68,9 @@ func (p *Parser) command() expressions.Expr {
 		Arguments: make([]expressions.Expr, 0),
 	}
 	expr.Name = p.consts()
-	p.advance()
 
 	for !p.matchAny(tokens.PIPE, tokens.SEMICOLON, tokens.AND, tokens.EOF) {
 		expr.Arguments = append(expr.Arguments, p.consts())
-		p.advance()
 	}
 
 	return expr
@@ -95,7 +84,6 @@ func (p *Parser) keywords() expressions.Expr {
 	p.advance()
 	for !p.matchAny(tokens.PIPE, tokens.SEMICOLON, tokens.AND, tokens.EOF) {
 		expr.Arguments = append(expr.Arguments, p.consts())
-		p.advance()
 	}
 	return expr
 }

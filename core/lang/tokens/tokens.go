@@ -1,10 +1,11 @@
 package tokens
 
 var KEYWORDS = map[string]struct{}{
-	"cd":   {},
-	"set":  {},
-	"env":  {},
-	"exit": {},
+	"cd":    {},
+	"set":   {},
+	"env":   {},
+	"alias": {},
+	"exit":  {},
 }
 
 const (
@@ -13,7 +14,6 @@ const (
 	PIPE                       // |
 	AND                        // &
 	SEMICOLON                  // ;
-	DOLLAR                     // $
 	STRING                     // ".*"
 	IDENT                      // [A-Za-z\-]+[_0-9]*
 	KEYWORD                    // build in stuff
@@ -25,7 +25,6 @@ var LOOKUP = map[TokenType]string{
 	PIPE:      "PIPE",
 	AND:       "AND",
 	SEMICOLON: "SEMICOLON",
-	DOLLAR:    "DOLLAR",
 	STRING:    "STRING",
 	IDENT:     "IDENT",
 	KEYWORD:   "KEYWORD",
