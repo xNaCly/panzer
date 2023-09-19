@@ -3,6 +3,7 @@ package preprocessor
 
 import (
 	"gopnzr/core/shell/env"
+	"gopnzr/core/state"
 	"strings"
 	"unicode"
 )
@@ -26,10 +27,20 @@ func (p *Preprocessor) NewInput(input string) {
 	p.Builder.Reset()
 }
 
+func matchesAny(r rune, runes ...rune) bool {
+	for _, cr := range runes {
+		if cr == r {
+			return true
+		}
+	}
+	return false
+}
+
 func (p *Preprocessor) Process() string {
 	for p.cc != 0 {
+		// expansion of variables
 		if p.cc == '$' {
-			p.advance()
+			p.advance() // skip dollar
 			for (unicode.IsLetter(p.cc) || p.cc == '_') && p.cc != 0 {
 				tempBuilder.WriteRune(p.cc)
 				p.advance()
@@ -38,6 +49,19 @@ func (p *Preprocessor) Process() string {
 				p.Builder.WriteString(val)
 			} else {
 				p.Builder.WriteRune('$')
+				p.Builder.WriteString(tempBuilder.String())
+			}
+			tempBuilder.Reset()
+		}
+
+		if unicode.IsLetter(p.cc) || p.cc == '_' || p.cc == '.' {
+			for unicode.IsLetter(p.cc) || p.cc == '_' || p.cc == '.' || p.cc != 0 {
+				tempBuilder.WriteRune(p.cc)
+				p.advance()
+			}
+			if val, ok := state.ALIASES[tempBuilder.String()]; ok {
+				p.Builder.WriteString(val)
+			} else {
 				p.Builder.WriteString(tempBuilder.String())
 			}
 			tempBuilder.Reset()
