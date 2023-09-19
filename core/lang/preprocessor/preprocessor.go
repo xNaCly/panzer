@@ -2,6 +2,7 @@
 package preprocessor
 
 import (
+	"fmt"
 	"gopnzr/core/shell/env"
 	"gopnzr/core/state"
 	"strings"
@@ -55,11 +56,17 @@ func (p *Preprocessor) Process() string {
 		}
 
 		if unicode.IsLetter(p.cc) || p.cc == '_' || p.cc == '.' {
-			for unicode.IsLetter(p.cc) || p.cc == '_' || p.cc == '.' || p.cc != 0 {
+			for unicode.IsLetter(p.cc) || p.cc == '_' || p.cc == '.' {
 				tempBuilder.WriteRune(p.cc)
 				p.advance()
 			}
+
+			if tempBuilder.Len() == 0 {
+				continue
+			}
+
 			if val, ok := state.ALIASES[tempBuilder.String()]; ok {
+				fmt.Printf("%q\n", tempBuilder.String())
 				p.Builder.WriteString(val)
 			} else {
 				p.Builder.WriteString(tempBuilder.String())
