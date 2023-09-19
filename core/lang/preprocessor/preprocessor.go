@@ -2,7 +2,6 @@
 package preprocessor
 
 import (
-	"fmt"
 	"gopnzr/core/shell/env"
 	"gopnzr/core/state"
 	"strings"
@@ -66,7 +65,6 @@ func (p *Preprocessor) Process() string {
 			}
 
 			if val, ok := state.ALIASES[tempBuilder.String()]; ok {
-				fmt.Printf("%q\n", tempBuilder.String())
 				p.Builder.WriteString(val)
 			} else {
 				p.Builder.WriteString(tempBuilder.String())
