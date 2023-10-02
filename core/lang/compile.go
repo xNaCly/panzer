@@ -30,7 +30,7 @@ var par = parser.Parser{}
 
 func Compile(input string, a *args.Arguments) {
 	prep.NewInput(input)
-	input = prep.Process()
+	input = prep.Process(a)
 
 	lex.NewInput(input)
 	token := lex.Lex()

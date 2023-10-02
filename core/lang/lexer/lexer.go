@@ -95,7 +95,7 @@ func (l *Lexer) ident() tokens.Token {
 	if l.cc == '=' {
 		panic("got = at identifier, you probably wanted to define an environment variable, use 'set VARIABLE_NAME value' instead")
 	}
-	for !l.matchAny('&', '|', '=', ';', '$', 0, ' ') {
+	for !l.matchAny('&', '|', '=', ';', 0, ' ') {
 		if !hasPattern && (l.cc == '?' || l.cc == '*') {
 			hasPattern = true
 		}

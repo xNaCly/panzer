@@ -2,6 +2,8 @@
 package preprocessor
 
 import (
+	"fmt"
+	"gopnzr/core/shell/args"
 	"gopnzr/core/shell/env"
 	"gopnzr/core/state"
 	"strings"
@@ -36,26 +38,33 @@ func matchesAny(r rune, runes ...rune) bool {
 	return false
 }
 
-func (p *Preprocessor) Process() string {
+func (p *Preprocessor) Process(a *args.Arguments) string {
 	for p.cc != 0 {
 		// expansion of variables
 		if p.cc == '$' {
 			p.advance() // skip dollar
-			for (unicode.IsLetter(p.cc) || p.cc == '_') && p.cc != 0 {
+			for (unicode.IsLetter(p.cc) || p.cc == '_') && p.cc != 0 && p.cc != '\n' {
 				tempBuilder.WriteRune(p.cc)
 				p.advance()
 			}
-			if val, ok := env.GetEnv(tempBuilder.String()); ok {
+			res := tempBuilder.String()
+			if val, ok := env.GetEnv(res); ok {
 				p.Builder.WriteString(val)
+				if a.Debug {
+					fmt.Printf("found variable %q, replaced it with %q\n", res, val)
+				}
 			} else {
+				if a.Debug {
+					fmt.Printf("unknown variable %q\n", res)
+				}
 				p.Builder.WriteRune('$')
-				p.Builder.WriteString(tempBuilder.String())
+				p.Builder.WriteString(res)
 			}
 			tempBuilder.Reset()
 		}
 
 		if unicode.IsLetter(p.cc) || p.cc == '_' || p.cc == '.' {
-			for unicode.IsLetter(p.cc) || p.cc == '_' || p.cc == '.' {
+			for (unicode.IsLetter(p.cc) || p.cc == '_' || p.cc == '.') && p.cc != 0 && p.cc != '\n' {
 				tempBuilder.WriteRune(p.cc)
 				p.advance()
 			}
@@ -64,13 +73,22 @@ func (p *Preprocessor) Process() string {
 				continue
 			}
 
-			if val, ok := state.ALIASES[tempBuilder.String()]; ok {
+			res := tempBuilder.String()
+
+			if val, ok := state.ALIASES[res]; ok {
 				p.Builder.WriteString(val)
+				if a.Debug {
+					fmt.Printf("found alias %q, replaced it with %q\n", res, val)
+				}
 			} else {
-				p.Builder.WriteString(tempBuilder.String())
+				if a.Debug {
+					fmt.Printf("unknown alias %q\n", res)
+				}
+				p.Builder.WriteString(res)
 			}
 			tempBuilder.Reset()
 		}
+
 		p.Builder.WriteRune(p.cc)
 		p.advance()
 	}
