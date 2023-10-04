@@ -33,8 +33,11 @@ func (c *Cmd) Eval() any {
 	}
 
 	cmd := exec.Command(c.Name.GetToken().Raw, args...)
+	// TODO: enable piping by replacing these with global buffers, such as Pipe?
 	cmd.Stderr = os.Stderr
+	cmd.Stdin = os.Stdin
 	cmd.Stdout = os.Stdout
+
 	err := cmd.Run()
 
 	if err != nil {
