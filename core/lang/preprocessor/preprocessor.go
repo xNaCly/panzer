@@ -63,30 +63,34 @@ func (p *Preprocessor) Process(a *args.Arguments) string {
 			tempBuilder.Reset()
 		}
 
-		if unicode.IsLetter(p.cc) || p.cc == '_' || p.cc == '.' {
-			for (unicode.IsLetter(p.cc) || p.cc == '_' || p.cc == '.') && p.cc != 0 && p.cc != '\n' {
-				tempBuilder.WriteRune(p.cc)
-				p.advance()
-			}
-
-			if tempBuilder.Len() == 0 {
-				continue
-			}
-
-			res := tempBuilder.String()
-
-			if val, ok := state.ALIASES[res]; ok {
-				p.Builder.WriteString(val)
-				if a.Debug {
-					fmt.Printf("found alias %q, replaced it with %q\n", res, val)
+		// TODO: this needs a fix, only commands should be replaced, no command arguments
+		// FIX: (TEMP): allow alias expansion only at the start of the expression
+		if p.prev() == 0 {
+			if unicode.IsLetter(p.cc) || p.cc == '_' || p.cc == '.' {
+				for (unicode.IsLetter(p.cc) || p.cc == '_' || p.cc == '.') && p.cc != 0 && p.cc != '\n' {
+					tempBuilder.WriteRune(p.cc)
+					p.advance()
 				}
-			} else {
-				if a.Debug {
-					fmt.Printf("unknown alias %q\n", res)
+
+				if tempBuilder.Len() == 0 {
+					continue
 				}
-				p.Builder.WriteString(res)
+
+				res := tempBuilder.String()
+
+				if val, ok := state.ALIASES[res]; ok {
+					p.Builder.WriteString(val)
+					if a.Debug {
+						fmt.Printf("found alias %q, replaced it with %q\n", res, val)
+					}
+				} else {
+					if a.Debug {
+						fmt.Printf("unknown alias %q\n", res)
+					}
+					p.Builder.WriteString(res)
+				}
+				tempBuilder.Reset()
 			}
-			tempBuilder.Reset()
 		}
 
 		p.Builder.WriteRune(p.cc)
@@ -94,6 +98,14 @@ func (p *Preprocessor) Process(a *args.Arguments) string {
 	}
 
 	return p.Builder.String()
+}
+
+func (p *Preprocessor) prev() rune {
+	if p.pos == 0 {
+		return 0
+	} else {
+		return p.in[p.pos-1]
+	}
 }
 
 func (p *Preprocessor) advance() {
