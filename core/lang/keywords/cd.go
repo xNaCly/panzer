@@ -5,9 +5,11 @@ package keywords
 
 import (
 	"fmt"
+	"gopnzr/core/shell/env"
 	"gopnzr/core/shell/prompt"
 	"gopnzr/core/shell/system"
 	"os"
+	"path/filepath"
 )
 
 // resolves the dir from the given argument, checks if the target is a dir,
@@ -51,10 +53,17 @@ func Cd(args ...string) {
 		panic(fmt.Sprintf("cd: %q is not a directory", dir))
 	}
 
-	err = os.Chdir(dir)
+	cleansedPath, err := filepath.Abs(dir)
 	if err != nil {
 		panic(err)
 	}
+
+	err = os.Chdir(cleansedPath)
+	if err != nil {
+		panic(err)
+	}
+
+	env.SetEnv("PWD", cleansedPath)
 
 	// we changed the directory, we need to update the prompt
 	prompt.UpdatePrompt()
