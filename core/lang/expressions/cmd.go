@@ -8,6 +8,9 @@ import (
 	"strings"
 )
 
+// TODO: what about quitting running tasks, maybe start commands with context,
+// store them in a map, then filter and kill if ^C is hit
+
 // everything passed to the shell which isnt a build in, string or any symbol
 // computed from: ls -la -> Cmd{Name:"ls", Arguments: []string{"-la"}}
 type Cmd struct {

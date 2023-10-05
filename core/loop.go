@@ -12,9 +12,12 @@ import (
 	"gopnzr/core/shell/env"
 	"gopnzr/core/shell/prompt"
 	"gopnzr/core/shell/system"
+	"gopnzr/core/state"
 	"io"
 	"log"
 	"os"
+	"os/signal"
+	"syscall"
 
 	"github.com/chzyer/readline"
 )
@@ -37,10 +40,21 @@ import (
 //   - exiting on EOF (Ctrl+D)
 func Shell() {
 	args := a.Get()
+
+	if args.Version {
+		fmt.Println(state.VERSION, state.VERSION_SUFFIX)
+		return
+	}
+
 	log.SetFlags(0)
 	env.SetEnv("PWD", system.Getwd())
 	exe, _ := os.Executable()
 	env.SetEnv("SHELL", exe)
+
+	// INFO: this captures interrupts, therefore not killing the shell when
+	// terminating commands
+	c := make(chan os.Signal, 2)
+	signal.Notify(c, os.Interrupt, syscall.SIGTERM)
 
 	err := prompt.PreComputePlaceholders()
 	if err != nil {

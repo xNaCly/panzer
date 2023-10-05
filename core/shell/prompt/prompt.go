@@ -10,8 +10,10 @@ import (
 	"time"
 )
 
+// home directory
 var HOME = "/"
 
+// default prompt: USERNAME@HOSTNAME WORKINGDIRECTORY >
 const DEFAULT_PROMPT = `\7\u\0@\6\h\0 \8\w\0 \2>\0 `
 
 // contains all possible placeholders a prompt could contain
@@ -23,6 +25,7 @@ var prompt_placeholders = map[rune]string{
 	'D': "",
 	't': "",
 	'T': "",
+	's': "panzer",
 	'0': "\033[0m",
 	'1': "\033[31m",
 	'2': "\033[32m",
@@ -39,7 +42,6 @@ var prompt_placeholders = map[rune]string{
 // on the main loop prompt computation
 func PreComputePlaceholders() (e error) {
 	HOME, _ = os.UserHomeDir()
-	// TODO: shell name (S)
 	u, e := user.Current()
 
 	prompt_placeholders['u'] = u.Username
