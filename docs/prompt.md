@@ -20,6 +20,7 @@ Currently the following placeholders are supported:
 | `\t`        | current time (24h) `15:04:05`        | directory change & shell startup |
 | `\s`        | shell name                           | shell startup (`panzer`)         |
 | `\T`        | current time (12h) `03:04:05PM`      | directory change & shell startup |
+| `\U`        | current time (unixepoch)             | directory change & shell startup |
 
 The following colors are also supported:
 

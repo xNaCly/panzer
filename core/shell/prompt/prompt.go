@@ -6,6 +6,7 @@ import (
 	"gopnzr/core/shell/system"
 	"os"
 	"os/user"
+	"strconv"
 	"strings"
 	"time"
 )
@@ -25,6 +26,7 @@ var prompt_placeholders = map[rune]string{
 	'D': "",
 	't': "",
 	'T': "",
+	'U': "",
 	's': "panzer",
 	'0': "\033[0m",
 	'1': "\033[31m",
@@ -65,6 +67,7 @@ func UpdatePrompt() {
 	prompt_placeholders['t'] = t.Format(time.TimeOnly)
 	prompt_placeholders['T'] = t.Format("03:04:05PM")
 	prompt_placeholders['w'] = system.Getwd()
+	prompt_placeholders['U'] = strconv.FormatInt(t.UnixMilli(), 10)
 	dir := system.Getdir()
 	if dir == prompt_placeholders['u'] {
 		dir = "~"
