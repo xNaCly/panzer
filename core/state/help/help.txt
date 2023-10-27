@@ -1,0 +1,22 @@
+Help pages
+
+    The help pages embedded into gopanzer are minimal and written in plain
+    text. Gopanzer and its contents are well documented and can all be accessed
+    using the 'help' build in:
+
+        help [topic]
+
+Syntax
+
+    Headings are not indented. Text in a heading is indented using one tab.
+    Commands to be executed using the panzer shell are indented one more tab
+    than the surrounding text, such as:
+
+        echo "command"
+
+    Code, Commands and highlighted characters are written between '': such as
+    the 'help' and 'alias' build ins.
+
+    Optional arguments are notated via '[]', required arguments via '<>', see the panzer command:
+
+        panzer [-c=<command>] [-v] [-d]

@@ -1,9 +1,14 @@
 package state
 
-var ALIASES = make(map[string]string, 0)
+import (
+	"embed"
+)
 
 const VERSION = "0.0.1"
 const VERSION_SUFFIX = "dev"
+
+//go:embed help/*.txt
+var HELP_PAGES embed.FS
 
 var ALIASES = make(map[string]string, 0)
 var DIR_STACK = DirStack{Stack: make([]string, 0), max: 9}
