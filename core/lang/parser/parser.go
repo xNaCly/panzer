@@ -13,9 +13,9 @@
 package parser
 
 import (
-	"fmt"
 	"gopnzr/core/lang/expressions"
 	"gopnzr/core/lang/tokens"
+	"log"
 )
 
 type Parser struct {
@@ -52,12 +52,14 @@ func (p *Parser) parse() expressions.Expr {
 
 func (p *Parser) consts() expressions.Expr {
 	var expr expressions.Expr
-	if p.peekEquals(tokens.STRING) {
+	if p.matchAny(tokens.STRING, tokens.KEYWORD) {
 		expr = &expressions.String{Token: p.peek()}
 		p.advance()
 	} else if p.peekEquals(tokens.IDENT) {
 		expr = &expressions.Ident{Token: p.peek()}
 		p.advance()
+	} else {
+		log.Printf("Unexpected %s", tokens.LOOKUP[p.peek().Type])
 	}
 	return expr
 }
@@ -92,7 +94,7 @@ func (p *Parser) expect(t tokens.TokenType) {
 	if p.peekEquals(t) {
 		p.advance()
 	} else {
-		panic(fmt.Sprintf("Unexpected %s, wanted %s", tokens.LOOKUP[p.peek().Type], tokens.LOOKUP[t]))
+		log.Printf("Unexpected %s, wanted %s", tokens.LOOKUP[p.peek().Type], tokens.LOOKUP[t])
 	}
 }
 
