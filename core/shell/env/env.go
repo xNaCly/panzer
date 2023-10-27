@@ -23,7 +23,6 @@ func GetEnvBool(key string) (r bool) {
 	return
 }
 
-// sets key to value in 'env_map'
 func SetEnv(key string, value string) {
 	os.Setenv(key, value)
 }

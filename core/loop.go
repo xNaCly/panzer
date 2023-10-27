@@ -73,6 +73,8 @@ func Shell() {
 		AutoComplete: complete.BuildCompleter(),
 	})
 
+	state.LAST_DIR = system.Getwd()
+
 	if err != nil {
 		panic(err)
 	}
@@ -101,11 +103,8 @@ func Shell() {
 
 func run(input string, args *a.Arguments) {
 	defer func() {
-		if args.Debug {
-			return
-		}
 		if err := recover(); err != nil {
-			log.Print(err)
+			return
 		}
 	}()
 	lang.Compile(input, args)
