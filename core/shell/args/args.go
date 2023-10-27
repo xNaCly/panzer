@@ -17,7 +17,7 @@ func Get() Arguments {
 
 	flag.StringVar(&a.Command, "c", "", "execute command, exit")
 	flag.BoolVar(&a.Debug, "d", false, "whether to enable debug logging")
-	flag.BoolVar(&a.Version, "version", false, "print version information, exit")
+	flag.BoolVar(&a.Version, "v", false, "print version information, exit")
 
 	flag.Parse()
 	return a
