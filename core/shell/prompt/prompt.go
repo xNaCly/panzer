@@ -2,8 +2,8 @@
 package prompt
 
 import (
-	"gopnzr/core/shell/env"
-	"gopnzr/core/shell/system"
+	"panzer/core/shell/env"
+	"panzer/core/shell/system"
 	"os"
 	"os/user"
 	"strconv"

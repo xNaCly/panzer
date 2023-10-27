@@ -3,9 +3,9 @@ package preprocessor
 
 import (
 	"fmt"
-	"gopnzr/core/shell/args"
-	"gopnzr/core/shell/env"
-	"gopnzr/core/state"
+	"panzer/core/shell/args"
+	"panzer/core/shell/env"
+	"panzer/core/state"
 	"strings"
 	"unicode"
 )

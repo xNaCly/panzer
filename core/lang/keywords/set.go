@@ -1,7 +1,7 @@
 package keywords
 
 import (
-	"gopnzr/core/shell/env"
+	"panzer/core/shell/env"
 	"log"
 	"strings"
 )

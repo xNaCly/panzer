@@ -2,7 +2,7 @@ package keywords
 
 import (
 	"fmt"
-	"gopnzr/core/state"
+	"panzer/core/state"
 )
 
 // prints elements in dir stack

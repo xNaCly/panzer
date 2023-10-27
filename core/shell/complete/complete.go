@@ -1,7 +1,7 @@
 package complete
 
 import (
-	"gopnzr/core/shell/system"
+	"panzer/core/shell/system"
 
 	"github.com/chzyer/readline"
 )

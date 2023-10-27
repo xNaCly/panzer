@@ -1,7 +1,7 @@
 package expressions
 
 import (
-	"gopnzr/core/lang/tokens"
+	"panzer/core/lang/tokens"
 	"strings"
 )
 

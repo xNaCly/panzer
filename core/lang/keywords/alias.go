@@ -2,7 +2,7 @@ package keywords
 
 import (
 	"fmt"
-	"gopnzr/core/state"
+	"panzer/core/state"
 )
 
 // Creates a new alias

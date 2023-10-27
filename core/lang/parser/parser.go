@@ -13,8 +13,8 @@
 package parser
 
 import (
-	"gopnzr/core/lang/expressions"
-	"gopnzr/core/lang/tokens"
+	"panzer/core/lang/expressions"
+	"panzer/core/lang/tokens"
 	"log"
 )
 

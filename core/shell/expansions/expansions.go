@@ -9,7 +9,7 @@
 package expansions
 
 import (
-	"gopnzr/core/shell/system"
+	"panzer/core/shell/system"
 	"os"
 	"path"
 )

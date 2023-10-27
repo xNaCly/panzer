@@ -4,7 +4,7 @@ package lexer
 
 import (
 	"fmt"
-	"gopnzr/core/lang/tokens"
+	"panzer/core/lang/tokens"
 	"strings"
 )
 

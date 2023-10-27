@@ -10,8 +10,8 @@
 package config
 
 import (
-	"gopnzr/core/lang"
-	"gopnzr/core/shell/args"
+	"panzer/core/lang"
+	"panzer/core/shell/args"
 	"log"
 	"os"
 )

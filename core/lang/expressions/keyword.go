@@ -1,8 +1,8 @@
 package expressions
 
 import (
-	"gopnzr/core/lang/keywords"
-	"gopnzr/core/lang/tokens"
+	"panzer/core/lang/keywords"
+	"panzer/core/lang/tokens"
 	"os"
 	"strings"
 )

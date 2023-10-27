@@ -1,4 +1,4 @@
-module gopnzr
+module panzer
 
 go 1.21
 

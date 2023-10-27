@@ -2,12 +2,12 @@ package lang
 
 import (
 	"fmt"
-	"gopnzr/core/lang/expressions"
-	"gopnzr/core/lang/lexer"
-	"gopnzr/core/lang/parser"
-	"gopnzr/core/lang/preprocessor"
-	"gopnzr/core/lang/tokens"
-	"gopnzr/core/shell/args"
+	"panzer/core/lang/expressions"
+	"panzer/core/lang/lexer"
+	"panzer/core/lang/parser"
+	"panzer/core/lang/preprocessor"
+	"panzer/core/lang/tokens"
+	"panzer/core/shell/args"
 	"strings"
 )
 

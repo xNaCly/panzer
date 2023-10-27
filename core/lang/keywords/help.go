@@ -1,7 +1,7 @@
 package keywords
 
 import (
-	"gopnzr/core/state"
+	"panzer/core/state"
 	"log"
 	"os"
 	"path/filepath"

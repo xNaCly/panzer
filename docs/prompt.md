@@ -2,7 +2,7 @@
 
 ## Placeholders
 
-gpnzr supports prompt customization via placeholders in the `PROMPT`
+Panzer supports prompt customization via placeholders in the `PROMPT`
 environment variable.
 
 A placeholder is a character prefixed with a backslash, such as `\u` for the
@@ -40,7 +40,7 @@ The following colors are also supported:
 ### Example:
 
 ```gpnzr
-teo@comfyputer ~/programming/gopnzr :: set PROMPT "\u %"
+teo@comfyputer ~/programming/panzer :: set PROMPT "\u %"
 teo %
 ```
 
@@ -50,4 +50,4 @@ Enable any of the following environment variables by setting them to `1`.
 
 | Environment variable | Description    | Effect                                   |
 | -------------------- | -------------- | ---------------------------------------- |
-|                      | default prompt | `teo@comfyputer ~/programming/gopnzr > ` |
+|                      | default prompt | `teo@comfyputer ~/programming/panzer > ` |

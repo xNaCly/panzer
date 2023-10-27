@@ -1,6 +1,6 @@
 package main
 
-import "gopnzr/core"
+import "panzer/core"
 
 func main() {
 	core.Shell()

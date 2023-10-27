@@ -1,9 +1,9 @@
-# gopnzr
+# panzer
 
-gopnzr - a minimal, fast and fun to use shell written in go
+panzer - a minimal, fast and fun to use shell written in go
 
 > _Warning_
-> gopnzr is in active development
+> panzer is in active development and currently only supports linux
 
 ## Features
 

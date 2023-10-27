@@ -1,10 +1,10 @@
 package keywords
 
 import (
-	"gopnzr/core/shell/env"
-	"gopnzr/core/shell/prompt"
-	"gopnzr/core/shell/system"
-	"gopnzr/core/state"
+	"panzer/core/shell/env"
+	"panzer/core/shell/prompt"
+	"panzer/core/shell/system"
+	"panzer/core/state"
 	"log"
 	"os"
 	"path/filepath"
