@@ -1,13 +1,16 @@
+// provides abstractions for environment interactions, such as getting and
+// setting environment variables - even supporting boolean environment
+// variables
 package env
 
 import "os"
 
 func GetEnv(key string) (string, bool) {
-	val := os.Getenv(key)
-	return val, val != ""
+	return os.LookupEnv(key)
 }
 
-// returns true value for key of 'env_map' equal to 1, false everything else and not found
+// returns true if environment variable 'key' is equal to 1, false for all
+// other values and not environment variable empty / not found
 func GetEnvBool(key string) (r bool) {
 	r = false
 	val := os.Getenv(key)

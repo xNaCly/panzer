@@ -1,4 +1,5 @@
-// abstractions for operating system interactions
+// abstractions for operating system interactions, such as getting all files in
+// the CWD, getting the CWD
 package system
 
 import (
