@@ -8,6 +8,11 @@ Panzer provides the `cd` keyword for path navigation:
 ~ > cd ..
 /home > cd ..
 / >
+/ > cd -
+/home > cd ^
+/ > cd ^
+/home > cd ^
+/~ >
 ```
 
 ## Matching filenames
