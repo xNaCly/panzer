@@ -1,10 +1,11 @@
 package expressions
 
 import (
-	"panzer/core/lang/tokens"
-	"panzer/core/shell/expansions"
+	"log"
 	"os"
 	"os/exec"
+	"panzer/core/lang/tokens"
+	"panzer/core/shell/expansions"
 	"strings"
 )
 
@@ -47,7 +48,7 @@ func (c *Cmd) Eval() any {
 	if err != nil {
 		succ := cmd.ProcessState.ExitCode()
 		if succ == -1 {
-			panic(err)
+			log.Panic(err)
 		}
 	}
 
