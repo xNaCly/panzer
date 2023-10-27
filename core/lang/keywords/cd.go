@@ -1,13 +1,11 @@
 package keywords
 
-// TODO: history
-// TODO: last dir via -
-
 import (
-	"fmt"
 	"gopnzr/core/shell/env"
 	"gopnzr/core/shell/prompt"
 	"gopnzr/core/shell/system"
+	"gopnzr/core/state"
+	"log"
 	"os"
 	"path/filepath"
 )
@@ -15,24 +13,25 @@ import (
 // resolves the dir from the given argument, checks if the target is a dir,
 // changes process working directory to the target
 func Cd(args ...string) {
-	al := len(args)
 	dir := ""
-	if al > 1 {
-		// cd can not accept more than 1 argument
-		panic("Too many arguments for cd")
-	} else if al == 0 {
+
+	if len(args) > 1 {
+		panic("cd: too many arguments for")
+	} else if len(args) == 0 {
 		// no arguments, means we want to go $HOME
 		dir = "~"
 	} else {
 		dir = args[0]
 	}
 
-	// we skip cd if we are already at the desired path
-	if dir == system.Getwd() {
-		return
-	}
+	addToHist := true
 
 	switch dir {
+	case "-":
+		dir = state.LAST_DIR
+	case "^":
+		dir = state.DIR_STACK.Pop()
+		addToHist = false
 	case "~":
 		h, err := os.UserHomeDir()
 		if err != nil {
@@ -44,13 +43,18 @@ func Cd(args ...string) {
 		return
 	}
 
+	// we skip cd if we are already at the desired path
+	if dir == system.Getwd() {
+		return
+	}
+
 	data, err := os.Stat(dir)
 	if err != nil {
-		panic(fmt.Sprintf("cd: the directory %q does not exist", dir))
+		log.Panicf("cd: the directory %q does not exist", dir)
 	}
 
 	if !data.IsDir() {
-		panic(fmt.Sprintf("cd: %q is not a directory", dir))
+		log.Panicf("cd: %q is not a directory", dir)
 	}
 
 	cleansedPath, err := filepath.Abs(dir)
@@ -58,9 +62,16 @@ func Cd(args ...string) {
 		panic(err)
 	}
 
+	prevDir := system.Getwd()
+
 	err = os.Chdir(cleansedPath)
 	if err != nil {
 		panic(err)
+	}
+
+	state.LAST_DIR = prevDir
+	if addToHist {
+		state.DIR_STACK.Add(prevDir)
 	}
 
 	env.SetEnv("PWD", cleansedPath)
