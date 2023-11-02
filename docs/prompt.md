@@ -21,6 +21,8 @@ Currently the following placeholders are supported:
 | `\s`        | shell name                           | shell startup (`panzer`)         |
 | `\T`        | current time (12h) `03:04:05PM`      | directory change & shell startup |
 | `\U`        | current time (unixepoch)             | directory change & shell startup |
+| `\b`        | git branch name                      | every command & shell startup    |
+| `\S`        | git status, `M` for modified         | every command & shell startup    |
 
 The following colors are also supported:
 
@@ -40,7 +42,7 @@ The following colors are also supported:
 ### Example:
 
 ```gpnzr
-teo@comfyputer ~/programming/panzer :: set PROMPT "\u %"
+teo@comfyputer ~/programming/panzer master > set PROMPT "\u %"
 teo %
 ```
 
@@ -48,6 +50,6 @@ teo %
 
 Enable any of the following environment variables by setting them to `1`.
 
-| Environment variable | Description    | Effect                                   |
-| -------------------- | -------------- | ---------------------------------------- |
-|                      | default prompt | `teo@comfyputer ~/programming/panzer > ` |
+| Environment variable | Description    | Effect                                          |
+| -------------------- | -------------- | ----------------------------------------------- |
+|                      | default prompt | `teo@comfyputer ~/programming/panzer master > ` |

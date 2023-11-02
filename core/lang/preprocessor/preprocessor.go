@@ -3,29 +3,24 @@ package preprocessor
 
 import (
 	"fmt"
+	"os"
 	"panzer/core/shell/args"
-	"panzer/core/shell/env"
-	"panzer/core/state"
 	"strings"
 	"unicode"
 )
 
 type Preprocessor struct {
-	pos     int
-	in      []rune
-	inL     int
 	cc      rune
+	in      *strings.Reader
 	Builder *strings.Builder
 }
 
 var tempBuilder = strings.Builder{}
 
 func (p *Preprocessor) NewInput(input string) {
-	i := []rune(input)
-	p.pos = 0
-	p.in = i
-	p.inL = len(input)
-	p.cc = i[0]
+	p.in = strings.NewReader(input)
+	r, _, _ := p.in.ReadRune()
+	p.cc = r
 	p.Builder.Reset()
 }
 
@@ -48,7 +43,7 @@ func (p *Preprocessor) Process(a *args.Arguments) string {
 				p.advance()
 			}
 			res := tempBuilder.String()
-			if val, ok := env.GetEnv(res); ok {
+			if val, ok := os.LookupEnv(res); ok {
 				p.Builder.WriteString(val)
 				if a.Debug {
 					fmt.Printf("found variable %q, replaced it with %q\n", res, val)
@@ -65,33 +60,31 @@ func (p *Preprocessor) Process(a *args.Arguments) string {
 
 		// TODO: this needs a fix, only commands should be replaced, no command arguments
 		// FIX: (TEMP): allow alias expansion only at the start of the expression
-		if p.prev() == 0 {
-			if unicode.IsLetter(p.cc) || p.cc == '_' || p.cc == '.' {
-				for (unicode.IsLetter(p.cc) || p.cc == '_' || p.cc == '.') && p.cc != 0 && p.cc != '\n' {
-					tempBuilder.WriteRune(p.cc)
-					p.advance()
-				}
+		// if unicode.IsLetter(p.cc) || p.cc == '_' || p.cc == '.' {
+		// 	for (unicode.IsLetter(p.cc) || p.cc == '_' || p.cc == '.') && p.cc != 0 && p.cc != '\n' {
+		// 		tempBuilder.WriteRune(p.cc)
+		// 		p.advance()
+		// 	}
 
-				if tempBuilder.Len() == 0 {
-					continue
-				}
+		// 	if tempBuilder.Len() == 0 {
+		// 		continue
+		// 	}
 
-				res := tempBuilder.String()
+		// 	res := tempBuilder.String()
 
-				if val, ok := state.ALIASES[res]; ok {
-					p.Builder.WriteString(val)
-					if a.Debug {
-						fmt.Printf("found alias %q, replaced it with %q\n", res, val)
-					}
-				} else {
-					if a.Debug {
-						fmt.Printf("unknown alias %q\n", res)
-					}
-					p.Builder.WriteString(res)
-				}
-				tempBuilder.Reset()
-			}
-		}
+		// 	if val, ok := state.ALIASES[res]; ok {
+		// 		p.Builder.WriteString(val)
+		// 		if a.Debug {
+		// 			fmt.Printf("found alias %q, replaced it with %q\n", res, val)
+		// 		}
+		// 	} else {
+		// 		if a.Debug {
+		// 			fmt.Printf("unknown alias %q\n", res)
+		// 		}
+		// 		p.Builder.WriteString(res)
+		// 	}
+		// 	tempBuilder.Reset()
+		// }
 
 		p.Builder.WriteRune(p.cc)
 		p.advance()
@@ -100,19 +93,10 @@ func (p *Preprocessor) Process(a *args.Arguments) string {
 	return p.Builder.String()
 }
 
-func (p *Preprocessor) prev() rune {
-	if p.pos == 0 {
-		return 0
-	} else {
-		return p.in[p.pos-1]
-	}
-}
-
 func (p *Preprocessor) advance() {
-	if p.pos+1 < p.inL {
-		p.pos++
-		p.cc = p.in[p.pos]
-	} else {
+	var err error
+	p.cc, _, err = p.in.ReadRune()
+	if err != nil {
 		p.cc = 0
 	}
 }

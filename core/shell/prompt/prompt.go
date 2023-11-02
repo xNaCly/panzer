@@ -2,10 +2,10 @@
 package prompt
 
 import (
-	"panzer/core/shell/env"
-	"panzer/core/shell/system"
 	"os"
 	"os/user"
+	"panzer/core/git"
+	"panzer/core/shell/system"
 	"strconv"
 	"strings"
 	"time"
@@ -15,18 +15,22 @@ import (
 var HOME = "/"
 
 // default prompt: USERNAME@HOSTNAME WORKINGDIRECTORY >
-const DEFAULT_PROMPT = `\7\u\0@\6\h\0 \8\w\0 \2>\0 `
+const DEFAULT_PROMPT = `\7\u\0@\6\h\0 \8\w\0 \1\b\0 \2>\0 `
+
+const remove_last_character = "\x08"
 
 // contains all possible placeholders a prompt could contain
 var prompt_placeholders = map[rune]string{
-	'u': "",
-	'h': "",
-	'w': "",
-	'd': "",
-	'D': "",
-	't': "",
-	'T': "",
-	'U': "",
+	'u': "", // username
+	'h': "", // hostname
+	'w': "", // pwd
+	'd': "", // name of directory
+	'D': "", // current date
+	't': "", // current time (24h)
+	'T': "", // current time (12h)
+	'U': "", // current time (unixepoch)
+	'b': "", // git branch
+	'S': "", // git status (M for modified)
 	's': "panzer",
 	'0': "\033[0m",
 	'1': "\033[31m",
@@ -61,13 +65,17 @@ func PreComputePlaceholders() (e error) {
 // updates all values in the placeholders map that are either unknown at
 // startup or require recomputation on a prompt redraw, such as cwd and time
 func UpdatePrompt() {
-	// TODO: support git-branch (b) (either nothing or the branch name, see 'git branch')
-	// TODO: support git-status (s) (either nothing or M for modified, see 'git status --short')
 	t := time.Now()
 	prompt_placeholders['t'] = t.Format(time.TimeOnly)
 	prompt_placeholders['T'] = t.Format("03:04:05PM")
 	prompt_placeholders['w'] = system.Getwd()
 	prompt_placeholders['U'] = strconv.FormatInt(t.UnixMilli(), 10)
+	prompt_placeholders['b'] = git.Branch()
+	if git.Status() {
+		prompt_placeholders['S'] = "M"
+	} else {
+		prompt_placeholders['S'] = ""
+	}
 	dir := system.Getdir()
 	if dir == prompt_placeholders['u'] {
 		dir = "~"
@@ -80,7 +88,7 @@ func UpdatePrompt() {
 func ComputePrompt() string {
 	UpdatePrompt()
 	prompt := DEFAULT_PROMPT
-	if val, ok := env.GetEnv("PROMPT"); ok {
+	if val, ok := os.LookupEnv("PROMPT"); ok {
 		prompt = val
 	}
 	return replacePlaceholders(prompt)
@@ -122,8 +130,15 @@ func replacePlaceholders(prompt string) string {
 			placeHolderMode = true
 		} else if placeHolderMode {
 			if t, ok := prompt_placeholders[c]; ok {
-				b.WriteString(t)
+				if t != "" {
+					b.WriteString(t)
+				} else {
+					// INFO: this removes the uncessecary whitespace before
+					// empty prompts placeholders, such as git
+					b.WriteString(remove_last_character)
+				}
 			}
+			// TODO: log not found escapes
 			placeHolderMode = false
 		} else {
 			b.WriteRune(c)

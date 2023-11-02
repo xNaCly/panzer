@@ -5,18 +5,17 @@ package core
 import (
 	"errors"
 	"fmt"
-	"panzer/core/lang"
-	a "panzer/core/shell/args"
-	"panzer/core/shell/complete"
-	"panzer/core/shell/config"
-	"panzer/core/shell/env"
-	"panzer/core/shell/prompt"
-	"panzer/core/shell/system"
-	"panzer/core/state"
 	"io"
 	"log"
 	"os"
 	"os/signal"
+	"panzer/core/lang"
+	a "panzer/core/shell/args"
+	"panzer/core/shell/complete"
+	"panzer/core/shell/config"
+	"panzer/core/shell/prompt"
+	"panzer/core/shell/system"
+	"panzer/core/state"
 	"syscall"
 
 	"github.com/chzyer/readline"
@@ -47,9 +46,9 @@ func Shell() {
 	}
 
 	log.SetFlags(0)
-	env.SetEnv("PWD", system.Getwd())
+	os.Setenv("PWD", system.Getwd())
 	exe, _ := os.Executable()
-	env.SetEnv("SHELL", exe)
+	os.Setenv("SHELL", exe)
 
 	// INFO: this captures interrupts, therefore not killing the shell when
 	// terminating commands
