@@ -2,7 +2,7 @@
 # https://github.com/xnacly
 
 # --- env ---
-set PROMPT "\9\d\0 \8>\0 "
+set PROMPT "\9\d\0 \1\b\0 \3\S\0 \8::\0 "
 set EDITOR "nvim"
 
 # --- alias ---

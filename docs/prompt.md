@@ -21,6 +21,8 @@ Currently the following placeholders are supported:
 | `\s`        | shell name                           | shell startup (`panzer`)         |
 | `\T`        | current time (12h) `03:04:05PM`      | directory change & shell startup |
 | `\U`        | current time (unixepoch)             | directory change & shell startup |
+| `\b`        | git branch name                      | every command & shell startup    |
+| `\S`        | git status, `M` for modified         | every command & shell startup    |
 
 The following colors are also supported:
 
