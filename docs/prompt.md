@@ -42,7 +42,7 @@ The following colors are also supported:
 ### Example:
 
 ```gpnzr
-teo@comfyputer ~/programming/panzer :: set PROMPT "\u %"
+teo@comfyputer ~/programming/panzer master > set PROMPT "\u %"
 teo %
 ```
 
@@ -50,6 +50,6 @@ teo %
 
 Enable any of the following environment variables by setting them to `1`.
 
-| Environment variable | Description    | Effect                                   |
-| -------------------- | -------------- | ---------------------------------------- |
-|                      | default prompt | `teo@comfyputer ~/programming/panzer > ` |
+| Environment variable | Description    | Effect                                          |
+| -------------------- | -------------- | ----------------------------------------------- |
+|                      | default prompt | `teo@comfyputer ~/programming/panzer master > ` |

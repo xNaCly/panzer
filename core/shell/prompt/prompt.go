@@ -15,7 +15,7 @@ import (
 var HOME = "/"
 
 // default prompt: USERNAME@HOSTNAME WORKINGDIRECTORY >
-const DEFAULT_PROMPT = `\7\u\0@\6\h\0 \8\w\0 \2>\0 `
+const DEFAULT_PROMPT = `\7\u\0@\6\h\0 \8\w\0 \1\b\0 \2>\0 `
 
 const remove_last_character = "\x08"
 
@@ -70,11 +70,12 @@ func UpdatePrompt() {
 	prompt_placeholders['T'] = t.Format("03:04:05PM")
 	prompt_placeholders['w'] = system.Getwd()
 	prompt_placeholders['U'] = strconv.FormatInt(t.UnixMilli(), 10)
-	// FIXME: bug here
-	// prompt_placeholders['b'] = git.Branch()
-	// if git.Status() {
-	// 	prompt_placeholders['S'] = "M"
-	// }
+	prompt_placeholders['b'] = git.Branch()
+	if git.Status() {
+		prompt_placeholders['S'] = "M"
+	} else {
+		prompt_placeholders['S'] = ""
+	}
 	dir := system.Getdir()
 	if dir == prompt_placeholders['u'] {
 		dir = "~"
