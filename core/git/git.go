@@ -12,7 +12,7 @@ import (
 // checks if git exists on the operating system and in the path
 func hasGit() bool {
 	_, found := exec.LookPath("git")
-	return found != nil
+	return found == nil
 }
 
 // checks if cwd is a git repo
@@ -20,7 +20,7 @@ func isRepo() bool {
 	if !hasGit() {
 		return false
 	}
-	if val, err := os.Stat(".git"); errors.Is(err, fs.ErrNotExist) || !val.IsDir() {
+	if _, err := os.Stat(".git"); err != nil && errors.Is(err, fs.ErrNotExist) {
 		return false
 	}
 	return true
