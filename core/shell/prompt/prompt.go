@@ -5,7 +5,6 @@ import (
 	"os"
 	"os/user"
 	"panzer/core/git"
-	"panzer/core/shell/env"
 	"panzer/core/shell/system"
 	"strconv"
 	"strings"
@@ -88,7 +87,7 @@ func UpdatePrompt() {
 func ComputePrompt() string {
 	UpdatePrompt()
 	prompt := DEFAULT_PROMPT
-	if val, ok := env.GetEnv("PROMPT"); ok {
+	if val, ok := os.LookupEnv("PROMPT"); ok {
 		prompt = val
 	}
 	return replacePlaceholders(prompt)

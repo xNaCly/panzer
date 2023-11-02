@@ -1,12 +1,11 @@
 package keywords
 
 import (
-	"panzer/core/shell/env"
+	"log"
+	"os"
 	"panzer/core/shell/prompt"
 	"panzer/core/shell/system"
 	"panzer/core/state"
-	"log"
-	"os"
 	"path/filepath"
 )
 
@@ -74,7 +73,7 @@ func Cd(args ...string) {
 		state.DIR_STACK.Add(prevDir)
 	}
 
-	env.SetEnv("PWD", cleansedPath)
+	os.Setenv("PWD", cleansedPath)
 
 	// we changed the directory, we need to update the prompt
 	prompt.UpdatePrompt()

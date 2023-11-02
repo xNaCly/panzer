@@ -5,10 +5,6 @@ package env
 
 import "os"
 
-func GetEnv(key string) (string, bool) {
-	return os.LookupEnv(key)
-}
-
 // returns true if environment variable 'key' is equal to 1, false for all
 // other values and not environment variable empty / not found
 func GetEnvBool(key string) (r bool) {
@@ -24,8 +20,4 @@ func GetEnvBool(key string) (r bool) {
 	}
 
 	return
-}
-
-func SetEnv(key string, value string) {
-	os.Setenv(key, value)
 }

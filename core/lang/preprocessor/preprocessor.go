@@ -3,8 +3,8 @@ package preprocessor
 
 import (
 	"fmt"
+	"os"
 	"panzer/core/shell/args"
-	"panzer/core/shell/env"
 	"strings"
 	"unicode"
 )
@@ -43,7 +43,7 @@ func (p *Preprocessor) Process(a *args.Arguments) string {
 				p.advance()
 			}
 			res := tempBuilder.String()
-			if val, ok := env.GetEnv(res); ok {
+			if val, ok := os.LookupEnv(res); ok {
 				p.Builder.WriteString(val)
 				if a.Debug {
 					fmt.Printf("found variable %q, replaced it with %q\n", res, val)
